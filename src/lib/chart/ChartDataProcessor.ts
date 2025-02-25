@@ -55,7 +55,7 @@ export class ChartDataProcessor {
         return { xTickLevel, yLims: [+lowerLimit.toFixed(2), +upperLimit.toFixed(2)], ticks, dateRange: this.dateRange };
     }
 
-    public processData(): [PollData, DayData[]] {
+    public processData(): [PollData, DayData[], number] {
         let data = this.applyPollsterGroupFilter(this.pollData);
         
         data = this.applyDateRangeFilter(data);
@@ -64,8 +64,12 @@ export class ChartDataProcessor {
         const dateExtent = d3.extent(data, (d) => d.date) as [Date, Date];
         
         const windowDays = dateExtent[1].getTime() - dateExtent[0].getTime() < 2 * 365 * 24 * 60 * 60 * 1000 ? 30 : 90;
-        return [data, this.calculateMovingAverages(data, windowDays)];
 
+        const dayData = this.renderOptions?.smoothing === "lowess" ?
+            this.calculateLOWESS(data, windowDays) :
+            this.calculateMovingAverages(data, windowDays);
+
+        return [data, dayData, windowDays];
     }
 
     private applyPollsterGroupFilter(pollData: PollData): PollData {
@@ -129,5 +133,40 @@ export class ChartDataProcessor {
         }
     
         return movingAvg;
+    }
+
+    private calculateLOWESS(pollData: PollData, windowDays = 30): DayData[] {
+        const dateExtent = d3.extent(pollData, (d) => d.date) as [Date, Date];
+        const dates = d3.timeDay.range(dateExtent[0], dateExtent[1]);
+        const smoothedData: DayData[] = [];
+    
+        for (const date of dates) {
+            const weights: number[] = [];
+            const localPoints: { date: Date; values: Record<Party, number> }[] = [];
+    
+            for (const poll of pollData) {
+                const distance = Math.abs(poll.date.getTime() - date.getTime()) / (windowDays * 24 * 60 * 60 * 1000);
+                const weight = Math.exp(-Math.pow(distance, 2)); // Gaussian kernel function
+                weights.push(weight);
+                localPoints.push({ date: poll.date, values: { ...poll } });
+            }
+    
+            const smoothedPoint: DayData = { date };
+    
+            for (const party of this.selectedParties) {
+                const weightedValues = localPoints
+                    .map((point, i) => (point.values[party] ? point.values[party] * weights[i] : 0))
+                    .filter(v => v > 0);
+                
+                const weightSum = weights.reduce((a, b) => a + b, 0);
+                const avg = weightedValues.length > 0 ? weightedValues.reduce((a, b) => a + b, 0) / weightSum : undefined;
+    
+                smoothedPoint[party] = avg;
+            }
+    
+            smoothedData.push(smoothedPoint);
+        }
+    
+        return smoothedData;
     }
 }

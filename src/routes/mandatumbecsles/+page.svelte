@@ -42,12 +42,17 @@
     <section class="parliamentChart">
         <div class="textBlock">
             <h2>A legvalószínűbb parlament</h2>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos, nemo voluptate dolor aut corporis eveniet facere unde, quia sit, fugiat optio odit enim fuga obcaecati laboriosam accusantium repudiandae soluta. Quo?</p>
         </div>
         <ParliamentChart />
+        <div class="textBlock">
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos, nemo voluptate dolor aut corporis eveniet facere unde, quia sit, fugiat optio odit enim fuga obcaecati laboriosam accusantium repudiandae soluta. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aut nesciunt expedita magnam deserunt, itaque nobis reiciendis sequi voluptas distinctio veniam cumque temporibus dolorem asperiores ipsum rem quaerat est. Laboriosam, suscipit!</p>
+        </div>
     </section>
     <section class="partyProjections">
         <div class="textBlock">
             <h2>Várható mandátumok pártonként</h2>
+            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Soluta accusantium impedit repellat dolorem ullam totam veritatis nemo nam, et reprehenderit nostrum sed labore repudiandae quis tenetur illum necessitatibus provident sit. Provident delectus, sunt perspiciatis sed alias, exercitationem dolorum modi quo animi repudiandae qui unde. Dolorem incidunt debitis fugit esse! In, magnam! Debitis!</p>
         </div>
         <article>
             <h3>Tisza</h3>
@@ -134,6 +139,10 @@
         &.partyProjections {
             display: grid;
             grid-template-columns: 150px 1fr;
+
+            .textBlock:first-child {
+                margin-bottom: 6px;
+            }
         }
 
         h2 {
@@ -148,6 +157,10 @@
 
         .textBlock {
             grid-column: 1 / 3;
+
+            p {
+                margin-top: 6px;
+            }
         }
 
         .divider {

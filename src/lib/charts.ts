@@ -7,7 +7,6 @@ export const charts: Record<string, ChartData> = {
         title: "A Fidesz és a Tisza versenyfutása",
         selectedParties: ["tisza", "fidesz", "unsure"],
         dataSelects: ["pollster_group", "voter_type"],
-        description: "30 napos mozgóátlag.",
         dateRange: { start: new Date(2023, 11, 1), end: new Date(2026, 3, 4) },
         annotations: [
             {
@@ -34,8 +33,7 @@ export const charts: Record<string, ChartData> = {
     'all-parties': {
         title: "Összes párt támogatottsága",
         dataSelects: ["pollster_group", "voter_type"],
-        description: "90 napos mozgóátlag.",
-        dateRange: { start: new Date(2023, 11, 1), end: new Date(2026, 3, 4) },
+        dateRange: { start: new Date(2018, 0, 1), end: new Date(2026, 3, 4) },
         annotations: [
             {
                 id: "ogy-18",
@@ -61,7 +59,6 @@ export const charts: Record<string, ChartData> = {
     'kiabrandult-fideszesek': {
         title: "Kiábrándult fideszesek nyomában",
         dataSelects: ["pollster_group"],
-        description: "A biztos szavazók körében, 30 napos mozgóátlag.",
         selectedParties: ["fidesz", "unsure"],
         voterType: "all_voters",
         dateRange: { start: new Date(2018, 0, 1), end: new Date() },
@@ -77,7 +74,6 @@ export const charts: Record<string, ChartData> = {
     'ellenzek-2022-ota': {
         title: "Az ellenzéki térfél a választások óta",
         dataSelects: ["pollster_group"],
-        description: "A biztos szavazók körében, 30 napos mozgóátlag.",
         selectedParties: ["momentum", "mkkp", "mihazank", "dk_mszp_p", "tisza", "unsure"],
         dateRange: { start: new Date(2022, 0, 1), end: new Date() },
         annotations: [{

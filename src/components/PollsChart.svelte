@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { onMount } from "svelte";
+    import { createEventDispatcher, onMount } from "svelte";
     import { Chart } from "$lib/chart/Chart";
     import type { Annotation, DateRange, Party, PollData, PollsterGroup } from "$lib/types";
 
@@ -13,7 +13,8 @@
     export let renderOptions = undefined as Record<string, any> | undefined;
 
     let chart = undefined as Chart | undefined;
-    
+    const dispatch = createEventDispatcher();
+
     onMount(() => {
         const containerElement = document.getElementById(id);
         if (!containerElement) return;
@@ -28,6 +29,7 @@
                 renderOptions,
             }
         );
+        dispatch("updateWindowDays", chart.windowDays);
     });
 
     $: if (chart && pollData) {
@@ -40,6 +42,7 @@
             annotations,
             renderOptions,
         });
+        dispatch("updateWindowDays", chart.windowDays);
     }
 
 </script>

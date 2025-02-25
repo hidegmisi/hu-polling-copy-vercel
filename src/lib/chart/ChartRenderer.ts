@@ -144,7 +144,7 @@ export class ChartRenderer {
 
     private getContainerSizeCategory() {
         const width = this.containerElement.offsetWidth;
-        
+
         for (const [category, size] of Object.entries(containerSizes)) {
             if (width <= size) {
                 return category as keyof typeof containerSizes;
@@ -169,10 +169,10 @@ export class ChartRenderer {
         if (renderOptions) this.renderOptions = { ...this.renderOptions, ...renderOptions };
 
         this.containerSizeCategory = this.getContainerSizeCategory();
-        
+
         this.margin.left = paddingLeftSizes[this.containerSizeCategory]
         this.margin.right = paddingSizes[this.containerSizeCategory]
-        
+
         this.setupChart();
         this.drawGridlines();
         this.drawAnnotations();
@@ -188,16 +188,16 @@ export class ChartRenderer {
         this.pollData = pollData;
         this.dailyData = dailyData;
         this.selectedParties = selectedParties;
-        
+
         const availableWidth = this.context.width - this.margin.right;
         const lastDataPointX = this.context.x(this.dailyData[this.dailyData.length - 1].date);
-        
+
         if (lastDataPointX + this.margin.right < availableWidth) {
             this.margin.right = paddingLeftSizes[this.containerSizeCategory];
         } else {
             this.margin.right = lastDataPointX + this.margin.right - availableWidth;
         }
-        
+
         this.context.x.range([this.margin.left, this.context.width - this.margin.right]);
         this.drawGridlines();
 
@@ -328,8 +328,6 @@ export class ChartRenderer {
             ? width - this.margin.right
             : width - paddingLeftSizes[this.containerSizeCategory];
             
-        //axisParams.ticks.push(y.invert(height - this.margin.bottom));
-
         const yLeftGridSelection = this.gridGroup.selectAll("g.y-grid-left").data([null]);
         yLeftGridSelection.join(
             enter => {
@@ -414,8 +412,7 @@ export class ChartRenderer {
                 .attr("y2", height - this.margin.bottom)
                 .attr("stroke", '#999')
                 .attr("opacity", 1)
-                .attr("stroke-width", 0.75)
-                //.attr("stroke-dasharray", "4, 4");
+                .attr("stroke-width", 0.75);
 
             this.annotationGroup
                 .append("text")
@@ -651,7 +648,7 @@ export class ChartRenderer {
 
         tooltipPositions.sort((a, b) => b.y - a.y);
 
-        const adjustedPositions: { x: number; y: number; text: string, color: string }[] = [];
+        const adjustedPositions: { x: number; y: number; oldY: number; text: string, color: string }[] = [];
         const minDistance = partyLabelSizes[this.containerSizeCategory] + 1;
 
         tooltipPositions.forEach((tooltip, i) => {
@@ -667,15 +664,10 @@ export class ChartRenderer {
             adjustedPositions.push({
                 x: tooltip.x,
                 y: newY,
+                oldY: tooltip.y,
                 text: `${partyDisplayNames[tooltip.party]} ${(tooltip.value * 100).toFixed(0)}`,
                 color: partyColors[tooltip.party],
             });
-        });
-
-        const averageY = tooltipPositions.reduce((sum, t) => sum + t.y, 0) / tooltipPositions.length;
-        const verticalOffset = averageY - adjustedPositions.reduce((sum, t) => sum + t.y, 0) / adjustedPositions.length;
-        adjustedPositions.forEach((tooltip) => {
-            tooltip.y -= 0
         });
 
         // Render adjusted tooltips
@@ -697,17 +689,24 @@ export class ChartRenderer {
                 .attr("stroke-width", 2)
                 .style("font-size", partyLabelSizes[this.containerSizeCategory])
                 .style("font-weight", 400)
-                .text(tooltip.text);
-
-            this.tooltipGroup.append("text")
-                .attr("x", tooltip.x + 16)
-                .attr("y", tooltip.y + 1)
-                .attr("text-anchor", "start")
-                .attr("alignment-baseline", "middle")
+                .attr("paint-order", "stroke")
                 .attr("fill", tooltip.color)
-                .style("font-size", partyLabelSizes[this.containerSizeCategory])
-                .style("font-weight", 400)
                 .text(tooltip.text);
+        });
+
+        // connect adjusted positions with lines
+        adjustedPositions.forEach((tooltip) => {
+            if (Math.abs(tooltip.oldY - tooltip.y) > 0) {
+                this.tooltipGroup.append("line")
+                    .attr("x1", tooltip.x)
+                    .attr("x2", tooltip.x + 8)
+                    .attr("y1", tooltip.oldY)
+                    .attr("y2", tooltip.y)
+                    .attr("stroke", tooltip.color)
+                    .attr("stroke-width", 1)
+                    .attr("linecap", "round")
+                    .lower();
+            }
         });
     }
 }

@@ -23,7 +23,7 @@
     export let selectedParties = undefined as Party[] | undefined;
     export let dateRange = undefined as DateRange | undefined;
     export let annotations = [] as Annotation[];
-    export let renderOptions = undefined as Record<string, any> | undefined;
+    export let renderOptions = {} as Record<string, any> | undefined;
     export let voterType = "sure_voters" as "sure_voters" | "all_voters";
     export let pollsterGroup = "összes" as PollsterGroup;
     
@@ -33,6 +33,7 @@
     let chartOptions = {
         data: [] as Poll[],
         pollsterGroupIndex: (pollsterGroups.findIndex((group) => group === pollsterGroup) || 0) as 0 | 1 | 2,
+        smoothing: "movingAverage" as "movingAverage" | "lowess",
     };
 
     let articleMap = {
@@ -41,6 +42,8 @@
         2: "a\xa0",
         3: "az",
     };
+
+    let windowDays = 0;
 
     onMount(() => {
         const loadingInterval = setInterval(() => {
@@ -78,6 +81,13 @@
                 közvélemény-kutató{!chartOptions.pollsterGroupIndex ? '' : 'k'} adatai alapján.
             {/if}
         </p>
+        <p>
+            {windowDays} napos
+            <select bind:value={chartOptions.smoothing}>
+                <option value="movingAverage">mozgóátlag</option>
+                <option value="lowess">LOWESS-regresszió</option>
+            </select>
+        </p>
         <p>{description}</p>
     </div>
     <PollsChart
@@ -87,7 +97,9 @@
         selectedPollsterGroup={pollsterGroups[chartOptions.pollsterGroupIndex]}
         {dateRange}
         {annotations}
-        {renderOptions}
+        renderOptions={{...renderOptions, smoothing: chartOptions.smoothing}}
+
+        on:updateWindowDays={(e) => windowDays = e.detail}
     />
     <div class="bottomMenu">
         <div class="item"><a href="/modszertan">Módszertan</a></div>

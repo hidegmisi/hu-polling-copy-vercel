@@ -1,13 +1,10 @@
 <script lang="ts">
-    import type { Party, PollData } from "$lib/types";
+    import type { PollData } from "$lib/types";
     import { onMount } from "svelte";
     import { pollData, fetchPollData } from "../../stores/dataStore";
-    import PollsChart from "../../components/PollsChart.svelte";
-    import MenuStrip from "../../components/MenuStrip.svelte";
-    import PollsCard from "../../components/PollsCard.svelte";
     import InteractivePollsCard from "../../components/InteractivePollsCard.svelte";
-    import RecentPollCard from "../../components/RecentPollCard.svelte";
     import RecentPollsAside from "../../components/RecentPollsAside.svelte";
+    import PollsCardFromData from "../../components/PollsCardFromData.svelte";
 
     let data: Record<'sure_voters' | 'all_voters', PollData> = {
         sure_voters: [],
@@ -38,82 +35,22 @@
         featured
     />
 </div>
-<RecentPollsAside {data} />
-<div id="all-parties">
-    <PollsCard
-        {data}
-        title="Parlamentbe jutásra esélyes pártok támogatottsága"
-        dataSelects={["pollster_group", "voter_type"]}
-        description="90 napos mozgóátlag."
-        dateRange={{ start: new Date(2018, 0, 1), end: new Date(2026, 4, 10) }}
-        annotations={[
-            {
-                id: "ogy-18",
-                text: "OGY. 2018",
-                date: new Date(2018, 3, 8),
-                lineType: "dotted",
-            },
-            {
-                id: "ogy-22",
-                text: "OGY. 2022",
-                date: new Date(2022, 3, 3),
-                lineType: "dotted",
-            },
-            {
-                id: "ogy-26",
-                text: "OGY. 2026",
-                date: new Date(2026, 3, 4),
-                lineType: "dotted",
-            },
-        ]}
-        renderOptions={{ aspectRatio: 3 / 2, yLims: [0, 0.69] }}
-    />
+<div class="sectionTitle">
+    <h2>Közvélemény-kutatások</h2>
 </div>
-<PollsCard
-    {data}
-    title="Kiábrándult fideszesek nyomában"
-    dataSelects={["pollster_group"]}
-    description="A biztos szavazók körében, 30 napos mozgóátlag."
-    selectedParties={["fidesz", "unsure"] as Party[]}
-    voterType="all_voters"
-    dateRange={{ start: new Date(2018, 0, 1), end: new Date() }}
-    annotations={
-        [{
-            id: "ogy-22",
-            text: "OGY. 2022 ",
-            date: new Date(2022, 3, 3),
-            lineType: "dotted",
-        }]
-    }
-    renderOptions={{ aspectRatio: 3 / 2, yLims: [0, 0.65] }}
-/>
+<RecentPollsAside {data} />
+<div id="fidesz-tisza">
+    <PollsCardFromData {data} chart_id="fidesz-tisza" />
+</div>
+<aside></aside>
+<div id="all-parties">
+    <PollsCardFromData {data} chart_id="all-parties" />
+</div>
+<PollsCardFromData {data} chart_id="kiabrandult-fideszesek" />
 <section id="polls-description" class="bodyContainer">
     <h2>Nem tudom, hogy mi lehet itten</h2>
 </section>
-<PollsCard
-    {data}
-    title="A Fideszen kívül a választások óta"
-    dataSelects={["pollster_group"]}
-    description="A biztos szavazók körében, 30 napos mozgóátlag."
-    selectedParties={[
-        "momentum",
-        "mkkp",
-        "mihazank",
-        "dk_mszp_p",
-        "tisza",
-        "unsure",
-    ] as Party[]}
-    dateRange={{ start: new Date(2022, 0, 1), end: new Date() }}
-    annotations={
-        [{
-            id: "ogy-22",
-            text: "OGY. 2022 ",
-            date: new Date(2022, 3, 3),
-            lineType: "dotted",
-        }]
-    }
-    renderOptions={{ aspectRatio: 3 / 2, yLims: [0, 0.55] }}
-/>
+<PollsCardFromData {data} chart_id="ellenzek-2022-ota" />
 <aside></aside>
 
 <style lang="scss">
@@ -133,6 +70,19 @@
         margin: 0 auto;
         padding: 8px 16px;
     }
+    
+    .sectionTitle {
+        display: flex;
+        justify-content: center;
+        margin-top: 2rem;
+        border-top: 1px solid #eee;
+        padding-top: 12px;
+
+        h2 {
+            font-weight: 400;
+        }
+    }
+
 
     h1 {
         font-size: 1.8rem;
@@ -159,8 +109,12 @@
             grid-column: 1 / 3;
         }
 
-        #all-parties {
+        #fidesz-tisza {
             grid-column: 2 / 3;
+        }
+
+        #all-parties {
+            grid-column: 1 / 3;
         }
 
         #polls-description {
@@ -183,8 +137,12 @@
             grid-column: 1 / 5;
         }
 
-        #all-parties {
+        #fidesz-tisza {
             grid-column: 2 / 5;
+        }
+
+        #all-parties {
+            grid-column: 1 / 4;
         }
 
         #polls-description {

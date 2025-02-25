@@ -14,8 +14,10 @@ export class Chart {
     private renderOptions: Record<string, unknown> | undefined;
     private renderer: ChartRenderer;
     private dataProcessor: ChartDataProcessor;
-    private processedData: [PollData, DayData[]] | null = null;
+    private processedData: [PollData, DayData[], number] | null = null;
     private resizeDebounce: number | null = null;
+
+    public windowDays = 0;
 
     constructor(containerElement: HTMLElement, pollData: PollData, options: {
         selectedParties?: Party[],
@@ -115,12 +117,14 @@ export class Chart {
         );
 
         this.processedData = this.dataProcessor.processData();
+        this.windowDays = this.processedData[2];
         this.renderer.updateData(this.processedData[0], this.processedData[1], this.selectedParties);
     }
     
     private updateAxis() {
         if (!this.processedData) {
             this.processedData = this.dataProcessor.processData();
+            this.windowDays = this.processedData[2];
         }
         this.renderer.updateAxisLimits(this.dataProcessor.getAxisParams(this.processedData[1], !!this.annotations.length));
     }
