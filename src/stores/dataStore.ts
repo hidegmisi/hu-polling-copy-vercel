@@ -1,40 +1,41 @@
-import { get, writable } from 'svelte/store';
+import { writable } from 'svelte/store';
 import { getPollData } from '../lib/dataUtils';
-import type { Party, PollData, PollsterData, PollsterGroup } from '../lib/types';
+import type { PartyData, PollData, PollsterData, PollsterGroup } from '../lib/types';
 
-export const partyColors = {
-    fidesz: "#fd8100",
-    tisza: "#00359c",
-    dk_mszp_p: "#007fff",
-    mihazank: "#688d1b",
-    mkkp: "#ff0000",
-    momentum: "#8e6fcd",
-    /////////////////////////////
-    semleges: "#d3d3d3",
-    unsure: "#a0f7",
-    /////////////////////////////
-    jobbik: "#425044",
-    egyesult_ellenzek: "#20b2aa",
-} as Record<Party, string>;
-
-export const partyColorsLight = {
-    fidesz: "#ffd6ab",
-    tisza: "#b0c4de",
-    /////////////////////////////
-    semleges: "#d3d3d3",
-} as Record<Party, string>;
-
-export const partyDisplayNames = {
-    fidesz: 'Fidesz',
-    tisza: 'Tisza',
-    dk_mszp_p: "DK-MSZP-P",
-    mihazank: 'Mi Hazánk',
-    mkkp: 'MKKP',
-    momentum: 'Momentum',
-    jobbik: 'Jobbik',
-    egyesult_ellenzek: "Egyesült Ellenzék",
-    unsure: "Bizonytalan",
-} as Record<Party, string>;
+export const partyData = {
+    'fidesz': {
+        name: 'Fidesz',
+        color: '#fd8100',
+    },
+    'tisza': {
+        name: 'Tisza',
+        color: '#00359c',
+    },
+    'dk_mszp_p': {
+        name: 'DK-MSZP-P',
+        color: '#007fff',
+    },
+    'mihazank': {
+        name: 'Mi Hazánk',
+        color: '#688d1b',
+    },
+    'mkkp': {
+        name: 'MKKP',
+        color: '#ff0000',
+    },
+    'momentum': {
+        name: 'Momentum',
+        color: '#8e6fcd',
+    },
+    'semleges': {
+        name: 'Semleges',
+        color: '#d3d3d3',
+    },
+    'unsure': {
+        name: 'Bizonytalan',
+        color: '#a0f7',
+    },
+} as PartyData;
 
 export const pollsterGroups = [
     "összes",

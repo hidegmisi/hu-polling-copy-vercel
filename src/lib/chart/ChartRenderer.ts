@@ -1,6 +1,6 @@
 import * as d3 from "d3";
 import type { DayData, AxisParams, Party, PollData, Annotation } from "../types";
-import { partyColors, partyColorsLight, partyDisplayNames, pollData } from "../../stores/dataStore";
+import { partyData } from "../../stores/dataStore";
 
 interface ChartContext {
     x: d3.ScaleTime<number, number>;
@@ -72,7 +72,6 @@ let verticalLineLabelSizes = {
 export class ChartRenderer {
     private static instanceCounter = 0;
     private clipPathId: string;
-    private static colors = partyColors;
 
     private renderOptions: Record<string, unknown> = {
         showDots: true,
@@ -458,7 +457,7 @@ export class ChartRenderer {
                     .attr("class", `${party}-trend-line`)
                     .attr("clip-path", `url(#${this.clipPathId})`)
                     .attr("fill", "none")
-                    .attr("stroke", ChartRenderer.colors[party])
+                    .attr("stroke", partyData[party].color)
                     .attr("stroke-width", lineWidths[this.containerSizeCategory])
                     .attr("opacity", 1)
                     .attr("d", line),
@@ -478,7 +477,7 @@ export class ChartRenderer {
                 enter => enter.append("path")
                     .attr("class", `${party}-foreground-line`)
                     .attr("fill", "none")
-                    .attr("stroke", ChartRenderer.colors[party])
+                    .attr("stroke", partyData[party].color)
                     .attr("stroke-width", lineWidths[this.containerSizeCategory] * 6)
                     .attr("stroke-linecap", "round")
                     .attr("opacity", 0.07)
@@ -509,7 +508,7 @@ export class ChartRenderer {
                     .attr("cy", (d) => y(d[party] as number))
                     .attr("r", dotSizes[this.axisParams.xTickLevel][this.containerSizeCategory])
                     .attr("opacity", 0)
-                    .attr("fill", ChartRenderer.colors[party])
+                    .attr("fill", partyData[party].color)
                     .call(enter => enter.transition().duration(500).attr("opacity", 0.15)),
 
                 update => update
@@ -665,8 +664,8 @@ export class ChartRenderer {
                 x: tooltip.x,
                 y: newY,
                 oldY: tooltip.y,
-                text: `${partyDisplayNames[tooltip.party]} ${(tooltip.value * 100).toFixed(0)}`,
-                color: partyColors[tooltip.party],
+                text: `${partyData[tooltip.party].name} ${(tooltip.value * 100).toFixed(0)}`,
+                color: partyData[tooltip.party].color,
             });
         });
 

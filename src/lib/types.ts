@@ -57,7 +57,9 @@ export type ChartData = {
 
 export type DateRange = { start: Date, end: Date };
 
-export type Party = 'fidesz' | 'tisza' | 'dk_mszp_p' | 'mihazank' | 'mkkp' | 'momentum' | 'jobbik' | 'egyesult_ellenzek' | 'semleges' | 'unsure';
+export type Party = 'fidesz' | 'tisza' | 'dk_mszp_p' | 'mihazank' | 'mkkp' | 'momentum' | 'semleges' | 'unsure';
+
+export type PartyData = Record<Party, { name: string; color: string; }>;
 
 export type DayData = {
     date: Date;

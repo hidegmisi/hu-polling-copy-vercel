@@ -2,7 +2,7 @@
     import { onMount } from "svelte";
     import * as d3 from "d3";
     import type { Party } from "$lib/types";
-    import { partyColors } from "../stores/dataStore";
+    import { partyData } from "../stores/dataStore";
 
     export let party: Party;
     export let data: number[];
@@ -22,12 +22,12 @@
         // 1) Convert your data into two separate arrays of { x, y } objects:
         //    - Fidesz is index 0 in each pair
         //    - Tisza is index 1
-        const partyData = selectedData.map((d, i) => ({ x: i, y: d as number | null }));
+        const partyMandatePoints = selectedData.map((d, i) => ({ x: i, y: d as number | null }));
 
         // set data to undefined if the value, and the values before and after are all 0
         for (let i = 1; i < selectedData.length - 1; i++) {
             if (selectedData[i] == 0 && selectedData[i - 1] == 0 && selectedData[i + 1] == 0) {
-                partyData[i].y = null;
+                partyMandatePoints[i].y = null;
             }
         }
 
@@ -38,7 +38,7 @@
         .range([margin.left, width - margin.right]);
 
         // 3) Determine max y-values so we can define separate y-scales for above/below
-        const max = d3.max(partyData, (d) => d.y) || 0;
+        const max = d3.max(partyMandatePoints, (d) => d.y) || 0;
 
         // 4) Create two y-scales:
         //    - Tisza (above center line) from 0..maxTisza => [height/2 .. margin.top]
@@ -64,9 +64,9 @@
         // 6) Append the area path
         svgSelection
         .append("path")
-        .datum(partyData)
-        .attr("fill",  partyColors[party] + "33")
-        .attr("stroke",  partyColors[party])
+        .datum(partyMandatePoints)
+        .attr("fill",  partyData[party].color + "33")
+        .attr("stroke",  partyData[party].color)
         .attr("stroke-width", 1)
         .attr("d", area);
             
@@ -78,7 +78,7 @@
             .attr("y1", yScale(0))
             .attr("x2", xScale(median))
             .attr("y2", yScale(max) - 10)
-            .attr("stroke", partyColors[party])
+            .attr("stroke", partyData[party].color)
             .attr("stroke-width", 3)
 
         svgSelection
@@ -89,7 +89,7 @@
             .attr("alignment-baseline", "text-after-edge")
             .style("font-size", "20px")
             .style("font-weight", 500)
-            .style("fill",  partyColors[party])
+            .style("fill",  partyData[party].color)
             .style("stroke", "#f9f9f9")
             .style("stroke-width", 2)
             .style("paint-order", "stroke")
@@ -222,16 +222,6 @@
 
 <article id="mandate-visualization">
     <svg bind:this={svg} viewBox={`0 0 ${width} ${height}`}></svg>
-    <!-- <div class="chartInfos">
-        <img src="images/orban.png" alt="Fidesz" class="fidesz" />
-        <div class="textContainer">
-            <h2 id="leaderText">Prognózis:</h2>
-            <div class="standing">
-                Tisza többség
-            </div>
-        </div>
-        <img src="images/magyar.png" alt="Tisza" class="tisza" />
-    </div> -->
 </article>
 
 <style lang="scss">

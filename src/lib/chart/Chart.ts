@@ -1,7 +1,7 @@
 import { ChartRenderer } from "./ChartRenderer";
 import { ChartDataProcessor } from "./ChartDataProcessor";
 import type { Annotation, AxisParams, DateRange, DayData, Party, PollData, PollsterGroup } from "../types";
-import { partyColors } from "../../stores/dataStore";
+import { partyData } from "../../stores/dataStore";
 
 export class Chart {
     private containerElement: HTMLElement;
@@ -29,7 +29,7 @@ export class Chart {
     } = {}) {
         this.containerElement = containerElement;
         this.pollData = pollData;
-        this.selectedParties = options.selectedParties ?? Object.keys(partyColors) as Party[];
+        this.selectedParties = options.selectedParties ?? Object.keys(partyData) as Party[];
         this.selectedPollsterGroup = options.selectedPollsterGroup ?? "összes";
         this.dateRange = options.dateRange ?? { start: new Date(2018, 0, 0), end: new Date() };
         this.partyIntervals = options.partyIntervals ?? this.getDefaultPartyIntervals();

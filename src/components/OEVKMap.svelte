@@ -1,7 +1,7 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import { partyColors } from "../stores/dataStore";
     import type { Map } from "leaflet";
+    import { partyData } from "../stores/dataStore";
     
     let map: Map;
     let geojsonData;
@@ -15,7 +15,7 @@
         for (let feature of geojsonData.features) {
             feature.properties = {
                 ...feature.properties,
-                color: Math.random() > 0.5 ? partyColors["tisza"] : partyColors["fidesz"],
+                color: Math.random() > 0.5 ? partyData["tisza"].color : partyData["fidesz"].color,
             };
         }
         

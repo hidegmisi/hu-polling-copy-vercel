@@ -16,6 +16,7 @@
 
     function keepAsidePosition() {
         const headerHeight = 160 + 55;
+        if (aside === null) return;
 
         if (window.scrollY > headerHeight + 16 && window.innerWidth > 600) {
             aside.style.position = "fixed";

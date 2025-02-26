@@ -1,7 +1,7 @@
 <script>
     import ParliamentChart from "$lib/parliament-chart/ParliamentChart";
     import { onMount } from "svelte";
-    import { partyColors } from "../stores/dataStore";
+    import { partyData } from "../stores/dataStore";
 
     let chart;
 
@@ -15,10 +15,10 @@
             margin: { top: 20, right: 20, bottom: 20, left: 20 },
         });
         chart.update([
-            { name: "Tisza", color: partyColors["tisza"], seats: 101 },
-            { name: "Fidesz", color: partyColors["fidesz"], seats: 83 },
-            { name: "dk_mszp_p", color: partyColors["dk_mszp_p"], seats: 9 },
-            { name: "mihazank", color: partyColors["mihazank"], seats: 6 },
+            { name: "Tisza", color: partyData["tisza"].color, seats: 101 },
+            { name: "Fidesz", color: partyData["fidesz"].color, seats: 83 },
+            { name: "dk_mszp_p", color: partyData["dk_mszp_p"].color, seats: 9 },
+            { name: "mihazank", color: partyData["mihazank"].color, seats: 6 },
         ]);
     });
 </script>
@@ -26,7 +26,7 @@
 <article>
     <div id="chart"></div>
     <div class="chartInfos">
-        <img src="images/magyar.png" alt="Tisza" class="tisza" />
+        <img src="/images/candidate/tisza.png" alt="Tisza" class="tisza" />
         <div class="results">
             <h3>51%</h3>
         </div>
@@ -34,7 +34,7 @@
         <div class="results">
             <h3>42%</h3>
         </div>
-        <img src="images/orban.png" alt="Fidesz" class="fidesz" />
+        <img src="/images/candidate/fidesz.png" alt="Fidesz" class="fidesz" />
     </div>
 </article>
 

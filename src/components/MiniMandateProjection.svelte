@@ -257,14 +257,14 @@
 <article id="mandate-visualization">
     <svg bind:this={svg} viewBox={`0 0 ${width} ${height}`}></svg>
     <div class="chartInfos">
-        <img src="images/orban.png" alt="Fidesz" class="fidesz" />
+        <img src="/images/candidate/fidesz.png" alt="Fidesz" class="fidesz" />
         <div class="textContainer">
             <h2 id="leaderText">Prognózis:</h2>
             <div class="standing">
                 Tisza többség
             </div>
         </div>
-        <img src="images/magyar.png" alt="Tisza" class="tisza" />
+        <img src="/images/candidate/tisza.png" alt="Tisza" class="tisza" />
     </div>
 </article>
 
