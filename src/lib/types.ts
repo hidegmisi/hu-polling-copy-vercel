@@ -40,6 +40,12 @@ export type Poll = {
     [party in Party]?: number;
 }
 
+export type Simulation = {
+    medians: Record<Party, number>;
+} & {
+    [party in Party]?: number[];
+}
+
 export type ChartData = {
     title: string;
     chartId?: string;

@@ -1,16 +1,13 @@
 <script lang="ts">
-    import type { PollData } from "$lib/types";
     import { onMount } from "svelte";
-    import { pollData, fetchPollData } from "../../stores/dataStore";
+    import { fetchData, simulationData } from "../../stores/dataStore";
     import PartyMandateProjection from "../../components/PartyMandateProjection.svelte";
     import MandateProjectionAside from "../../components/MandateProjectionAside.svelte";
     import OevkMap from "../../components/OEVKMap.svelte";
     import ParliamentChart from "../../components/ParliamentChart.svelte";
+    import PartyMandateTable from "../../components/PartyMandateTable.svelte";
 
-    let data: Record<'sure_voters' | 'all_voters', PollData> = {
-        sure_voters: [],
-        all_voters: [],
-    };
+    let data: Record<string, any> = {};
 
     let aside: HTMLElement;
 
@@ -29,15 +26,15 @@
     }
 
     onMount(() => {
-        fetchPollData();
+        fetchData();
         window.addEventListener("scroll", keepAsidePosition);
     });
 
-    $: data = $pollData;
+    $: data = $simulationData;
 </script>
 
 <aside bind:this={aside}>
-    <MandateProjectionAside />
+    <MandateProjectionAside {data} />
 </aside>
 <main>
     <section class="parliamentChart">
@@ -45,7 +42,8 @@
             <h2>A legvalószínűbb parlament</h2>
             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos, nemo voluptate dolor aut corporis eveniet facere unde, quia sit, fugiat optio odit enim fuga obcaecati laboriosam accusantium repudiandae soluta. Quo?</p>
         </div>
-        <ParliamentChart />
+        <ParliamentChart {data}/>
+        <PartyMandateTable data={data['main']?.medians} />
         <div class="textBlock">
             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos, nemo voluptate dolor aut corporis eveniet facere unde, quia sit, fugiat optio odit enim fuga obcaecati laboriosam accusantium repudiandae soluta. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aut nesciunt expedita magnam deserunt, itaque nobis reiciendis sequi voluptas distinctio veniam cumque temporibus dolorem asperiores ipsum rem quaerat est. Laboriosam, suscipit!</p>
         </div>
@@ -61,10 +59,8 @@
         </article>
         <PartyMandateProjection
             party="tisza"
-            data={[
-                0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.03,0.03,0.03,0.03,0.03,0.03,0.03,0.03,0.03,0.03,0.03,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0,
-            ]} 
-            median={101}
+            data={data.main?.tisza} 
+            median={data.main?.medians?.tisza}
         />
         <div class="divider"></div>
         <article>
@@ -73,10 +69,8 @@
         </article>
         <PartyMandateProjection
             party="fidesz"
-            data={[
-                0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.02,0.02,0.02,0.02,0.03,0.03,0.03,0.03,0.04,0.04,0.04,0.04,0.04,0.04,0.04,0.04,0.04,0.04,0.04,0.03,0.03,0.03,0.03,0.02,0.02,0.02,0.02,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.0
-            ]} 
-            median={83}
+            data={data.main?.fidesz} 
+            median={data.main?.medians?.fidesz}
         />
         <div class="divider"></div>
         <article>
@@ -85,10 +79,8 @@
         </article>
         <PartyMandateProjection
             party="dk_mszp_p"
-            data={[
-                0,0.0265,0.0302,0.034,0.0376,0.041,0.044,0.0465,0.0483,0.0495,0.0499,0.0495,0.0483,0.0465,0.044,0.041,0.0376,0.034,0.0302,0.0265,0.0228,0.0194,0.0162,0.0133,0.0108,0.0086,0.0067,0.0052,0.004,0.003,0.0022,0.0016,0.0011,0.0008,0.0006,0.0004,0.0003,0.0002,0.0001,0.0001,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-            ]} 
-            median={9}
+            data={data.main?.dk_mszp_p} 
+            median={data.main?.medians?.dk_mszp_p}
         />
         <div class="divider"></div>
         <article>
@@ -97,10 +89,8 @@
         </article>
         <PartyMandateProjection
             party="mihazank"
-            data={[
-                0,0.0388,0.0484,0.0579,0.0666,0.0737,0.0782,0.0798,0.0782,0.0737,0.0666,0.0579,0.0484,0.0388,0.0299,0.0222,0.0158,0.0108,0.0071,0.0045,0.0027,0.0016,0.0009,0.0005,0.0002,0.0001,0.0001,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.0
-            ]} 
-            median={6}
+            data={data.main?.mihazank} 
+            median={data.main?.medians?.mihazank}
         />
         <div class="divider"></div>
         <article>
@@ -109,10 +99,8 @@
         </article>
         <PartyMandateProjection
             party="mkkp"
-            data={[
-                0.0798, 0.0782, 0.0737, 0.0666, 0.0579, 0.0484, 0.0388, 0.0299, 0.0222, 0.0158, 0.0108, 0.0071, 0.0045, 0.0027, 0.0016, 0.0009, 0.0005, 0.0002, 0.0001, 0.0001, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            ]} 
-            median={0}
+            data={data.main?.mkkp} 
+            median={data.main?.medians?.mkkp}
         />
     </section>
     <section class="map">
@@ -141,8 +129,12 @@
             display: grid;
             grid-template-columns: 150px 1fr;
 
-            .textBlock:first-child {
-                margin-bottom: 6px;
+            .textBlock {
+                grid-column: 1 / 3;
+
+                &:first-child {
+                    margin-bottom: 6px;
+                }
             }
         }
 
@@ -152,13 +144,11 @@
         }
 
         h3 {
-            font-size: 20px;
+            font-size: 22px;
             font-weight: 400;
         }
 
         .textBlock {
-            grid-column: 1 / 3;
-
             p {
                 margin-top: 6px;
             }

@@ -1,5 +1,5 @@
 import * as d3 from "d3";
-import type { PollData } from "./types";
+import type { PollData, Simulation } from "./types";
 
 /* const aggregatorNameMap: { [key in keyof Omit<CandidateData, 'candidate' | 'date' | 'avg'>]: {abv: string, full: string, link: string} } = {
     fivethirtyeight: {abv: "538", full: "538 (ABC News)", link: "https://projects.fivethirtyeight.com/polls/president-general/2024/national/"},
@@ -20,45 +20,63 @@ async function fetchPollData(): Promise<Record<string, PollData>> {
     return fetchedData;
 }
 
+
+async function fetchSimulationData(): Promise<Record<string, Simulation> | false> {
+    const response = await fetch("data/simulationData.json");
+    if (!response.ok) return false;
+    return await response.json();
+}
+
 function isDataStale() {
     const oneHour = 1000 * 60 * 60;
     const now = new Date();
-    const lastUpdated = new Date(sessionStorage.getItem("pollsDataUpdated") || 0);
+    const lastUpdated = new Date(sessionStorage.getItem("dataUpdated") || 0);
     const diff = now.getTime() - lastUpdated.getTime();
 
     return (
+        sessionStorage.getItem("dataUpdated") == null ||
         sessionStorage.getItem("pollsData") == null ||
-        sessionStorage.getItem("pollsDataUpdated") == null ||
+        sessionStorage.getItem("simulationData") == null ||
         diff >= oneHour
     );
 }
 
-async function getPollData(): Promise<Record<string, PollData> | false> {
+async function getData() {
     let retrivedData = null;
 
     if (isDataStale()) {
-        const fetchedData = await fetchPollData();
-        if (!fetchedData) return false;
-        
-        const now = new Date();
-        sessionStorage.setItem("pollsData", JSON.stringify(fetchedData));
-        sessionStorage.setItem("pollsDataUpdated", now.toString());
-        retrivedData = fetchedData;
-    } else {
-        const storedData = sessionStorage.getItem("pollsData");
-        if (storedData === null) return false;
+        const pollData = await fetchPollData();
+        if (!pollData) return false;
 
-        retrivedData = JSON.parse(storedData) as Record<string, PollData>;
+        const simulationData = await fetchSimulationData();
+        if (!simulationData) return false;
+
+        const now = new Date();
+        sessionStorage.setItem("dataUpdated", now.toString());
+        sessionStorage.setItem("pollsData", JSON.stringify(pollData));
+        sessionStorage.setItem("simulationData", JSON.stringify(simulationData));
+        retrivedData = { pollData, simulationData };
+    } else {
+        const storedData = {
+            pollData: sessionStorage.getItem("pollsData"),
+            simulationData: sessionStorage.getItem("simulationData"),
+        }
+        if (storedData.pollData === null || storedData.simulationData === null) return false;
+        
+        retrivedData = {
+            pollData: JSON.parse(storedData.pollData) as Record<string, PollData>,
+            simulationData: JSON.parse(storedData.simulationData) as Record<string, Simulation>,
+        };
     }
 
-    retrivedData.sure_voters.forEach((d) => {
+    retrivedData.pollData.sure_voters.forEach((d) => {
         d.date = new Date(d.date);
     });
-    retrivedData.all_voters.forEach((d) => {
+    retrivedData.pollData.all_voters.forEach((d) => {
         d.date = new Date(d.date);
     });
 
     return retrivedData;
 }
 
-export { getPollData };
+export { getData };

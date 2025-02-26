@@ -1,18 +1,9 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import * as d3 from "d3";
+    import type { Simulation } from "$lib/types";
 
-    let data = {
-        'proba': [
-            [0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.01, 0.0],[0.01, 0.0],[0.01, 0.0],[0.01, 0.0],[0.01, 0.0],[0.01, 0.0],[0.01, 0.0],[0.02, 0.0],[0.02, 0.0],[0.02, 0.0],[0.02, 0.0],[0.03, 0.0],[0.03, 0.0],[0.03, 0.0],[0.03, 0.0],[0.04, 0.0],[0.04, 0.0],[0.04, 0.0],[0.04, 0.01],[0.04, 0.01],[0.04, 0.01],[0.04, 0.01],[0.04, 0.01],[0.04, 0.01],[0.04, 0.01],[0.04, 0.02],[0.03, 0.02],[0.03, 0.02],[0.03, 0.02],[0.03, 0.03],[0.02, 0.03],[0.02, 0.03],[0.02, 0.03],[0.02, 0.04],[0.01, 0.04],[0.01, 0.04],[0.01, 0.04],[0.01, 0.04],[0.01, 0.04],[0.01, 0.04],[0.01, 0.04],[0.0, 0.04],[0.0, 0.04],[0.0, 0.04],[0.0, 0.03],[0.0, 0.03],[0.0, 0.03],[0.0, 0.03],[0.0, 0.02],[0.0, 0.02],[0.0, 0.02],[0.0, 0.02],[0.0, 0.01],[0.0, 0.01],[0.0, 0.01],[0.0, 0.01],[0.0, 0.01],[0.0, 0.01],[0.0, 0.01],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],
-        ],
-        'proba2': [
-            [0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.01, 0.0],[0.01, 0.0],[0.01, 0.0],[0.01, 0.0],[0.01, 0.0],[0.01, 0.0],[0.01, 0.0],[0.02, 0.0],[0.02, 0.0],[0.02, 0.0],[0.02, 0.0],[0.03, 0.01],[0.03, 0.01],[0.03, 0.01],[0.03, 0.01],[0.04, 0.01],[0.04, 0.01],[0.04, 0.01],[0.04, 0.01],[0.04, 0.01],[0.04, 0.01],[0.04, 0.01],[0.04, 0.02],[0.04, 0.02],[0.04, 0.02],[0.04, 0.02],[0.03, 0.02],[0.03, 0.02],[0.03, 0.02],[0.03, 0.02],[0.02, 0.02],[0.02, 0.02],[0.02, 0.02],[0.02, 0.03],[0.01, 0.03],[0.01, 0.03],[0.01, 0.03],[0.01, 0.03],[0.01, 0.03],[0.01, 0.03],[0.01, 0.03],[0.0, 0.03],[0.0, 0.03],[0.0, 0.03],[0.0, 0.02],[0.0, 0.02],[0.0, 0.02],[0.0, 0.02],[0.0, 0.02],[0.0, 0.02],[0.0, 0.02],[0.0, 0.02],[0.0, 0.02],[0.0, 0.02],[0.0, 0.02],[0.0, 0.01],[0.0, 0.01],[0.0, 0.01],[0.0, 0.01],[0.0, 0.01],[0.0, 0.01],[0.0, 0.01],[0.0, 0.01],[0.0, 0.01],[0.0, 0.01],[0.0, 0.01],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],[0.0, 0.0],
-        ],
-    }
-
-    let medianFidesz = 83;
-    let medianTisza = 101;
+    export let data: Record<string, Simulation>;
 
     let width = 250;
     let height = 180;
@@ -24,30 +15,49 @@
     
     let svg; // We'll bind <svg> to this variable.
 
+    let simulationData = {} as Simulation;
+
     onMount(() => {
-        const selectedData = data['proba2'];
+        const loadingInterval = setInterval(() => {
+            if (data['main']) {
+                simulationData = data['main'];
+                clearInterval(loadingInterval);
+            }
+        }, 10);
+    });
+    
+    $: if (simulationData['fidesz']?.length && simulationData['tisza']?.length) {
+        createChart();
+    }
+
+    function createChart() {
+        const selectedData = simulationData;
+        if (!selectedData['fidesz']?.length || !selectedData['tisza']?.length) {
+            return;
+        }
+
         const svgSelection = d3.select(svg);
 
         // 1) Convert your data into two separate arrays of { x, y } objects:
         //    - Fidesz is index 0 in each pair
         //    - Tisza is index 1
-        const dataFidesz = selectedData.map((d, i) => ({ x: i, y: d[0] }));
-        const dataTisza = selectedData.map((d, i) => ({ x: i, y: d[1] }));
+        const dataFidesz = selectedData['fidesz'].map((d, i) => ({ x: i, y: d as number | null }));
+        const dataTisza = selectedData['tisza'].map((d, i) => ({ x: i, y: d  as number | null}));
 
         // set data to undefined if the value, and the values before and after are all 0
-        for (let i = 1; i < selectedData.length - 1; i++) {
-            if (selectedData[i][0] == 0 && selectedData[i - 1][0] == 0 && selectedData[i + 1][0] == 0) {
+        for (let i = 1; i < dataFidesz.length - 1; i++) {
+            if (dataFidesz[i].y === 0 && dataFidesz[i - 1].y === 0 && dataFidesz[i + 1].y === 0) {
                 dataFidesz[i].y = null;
             }
-            if (selectedData[i][1] == 0 && selectedData[i - 1][1] == 0 && selectedData[i + 1][1] == 0) {
+            if (dataTisza[i].y === 0 && dataTisza[i - 1].y === 0 && dataTisza[i + 1].y === 0) {
                 dataTisza[i].y = null;
             }
         }
-
-        // 2) Create an x-scale from [0 .. selectedData.length-1] → [margin.left .. width-margin.right]
+        
+        // 2) Create an x-scale from [0 .. data.length-1] → [margin.left .. width-margin.right]
         const yScale = d3
         .scaleLinear()
-        .domain([0, selectedData.length - 1])
+        .domain([0, dataFidesz.length - 1])
         .range([height - margin.bottom, margin.top]);
 
         // 3) Determine max y-values so we can define separate y-scales for above/below
@@ -109,16 +119,16 @@
         
         svgSelection
             .append("line")
-            .attr("y1", yScale(medianFidesz))
+            .attr("y1", yScale(selectedData.medians.fidesz))
             .attr("x1", xScaleFidesz(0))
-            .attr("y2", yScale(medianFidesz))
+            .attr("y2", yScale(selectedData.medians.fidesz))
             .attr("x2", xScaleFidesz(maxUnified) - 10)
             .attr("stroke", "#fd8100")
             .attr("stroke-width", 3)
 
         svgSelection
             .append("text")
-            .attr("y", yScale(medianFidesz))
+            .attr("y", yScale(selectedData.medians.fidesz))
             .attr("x", xScaleFidesz(maxUnified) - 15)
             .attr("text-anchor", "end")
             .attr("alignment-baseline", "middle")
@@ -128,20 +138,20 @@
             .style("stroke", "#f9f9f9")
             .style("stroke-width", 2)
             .style("paint-order", "stroke")
-            .text(`${medianFidesz}`);
+            .text(`${selectedData.medians.fidesz}`);
         
         svgSelection
             .append("line")
-            .attr("y1", yScale(medianTisza))
+            .attr("y1", yScale(selectedData.medians.tisza))
             .attr("x1", xScaleTisza(0))
-            .attr("y2", yScale(medianTisza))
+            .attr("y2", yScale(selectedData.medians.tisza))
             .attr("x2", xScaleTisza(maxUnified) + 10)
             .attr("stroke", "#00359c")
             .attr("stroke-width", 3)
 
         svgSelection
             .append("text")
-            .attr("y", yScale(medianTisza))
+            .attr("y", yScale(selectedData.medians.tisza))
             .attr("x", xScaleTisza(maxUnified) + 15)
             .attr("text-anchor", "start")
             .attr("alignment-baseline", "middle")
@@ -151,7 +161,7 @@
             .style("stroke", "#f9f9f9")
             .style("stroke-width", 2)
             .style("paint-order", "stroke")
-            .text(`${medianTisza}`);
+            .text(`${selectedData.medians.tisza}`);
 
         // 9) Draw the horizontal axis in the center (y = height/2)
 
@@ -251,7 +261,7 @@
             .style("font-weight", 400)
             .style("fill", "#333")
             .text("199");
-    });    
+    }    
 </script>
 
 <article id="mandate-visualization">

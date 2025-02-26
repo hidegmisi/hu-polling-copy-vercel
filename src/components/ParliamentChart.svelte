@@ -1,11 +1,24 @@
-<script>
+<script lang="ts">
     import ParliamentChart from "$lib/parliament-chart/ParliamentChart";
     import { onMount } from "svelte";
     import { partyData } from "../stores/dataStore";
+    import type { Party, Simulation } from "$lib/types";
+
+    export let data = {} as Record<string, Simulation>;
 
     let chart;
+    let chartData = [] as { id: Party, name: string; color: string; seats: number }[];
 
     onMount(() => {
+        const loadingInterval = setInterval(() => {
+            if (Object.keys(partyData).length && data.main.medians) {
+                clearInterval(loadingInterval);
+                drawChart();
+            }
+        }, 10);
+    });
+
+    function drawChart() {
         chart = new ParliamentChart("#chart", {
             width: 600,
             height: 350,
@@ -14,28 +27,39 @@
             // You can adjust these as needed.
             margin: { top: 20, right: 20, bottom: 20, left: 20 },
         });
-        chart.update([
-            { name: "Tisza", color: partyData["tisza"].color, seats: 101 },
-            { name: "Fidesz", color: partyData["fidesz"].color, seats: 83 },
-            { name: "dk_mszp_p", color: partyData["dk_mszp_p"].color, seats: 9 },
-            { name: "mihazank", color: partyData["mihazank"].color, seats: 6 },
-        ]);
-    });
+        
+        for (const party of (["fidesz", "tisza", "mihazank", "dk_mszp_p", "mkkp"] as (keyof typeof partyData)[]) ) {
+            chartData.push({
+                id: party,
+                name: partyData[party].name,
+                color: partyData[party].color,
+                seats: data.main.medians[party],
+            });
+        }
+
+        chartData.sort((a, b) => b.seats - a.seats);
+        chart.update(chartData)
+
+        chartData = [...chartData];
+    }
+
 </script>
 
 <article>
     <div id="chart"></div>
+    {#if chartData.length}
     <div class="chartInfos">
-        <img src="/images/candidate/tisza.png" alt="Tisza" class="tisza" />
+        <img src="/images/candidate/{chartData[0].id}.png" alt={chartData[0].name} style={`background-color: ${chartData[0].color}66`} />
         <div class="results">
-            <h3>51%</h3>
+            <h3>{Math.round(chartData[0].seats / 199 * 100)}%</h3>
         </div>
         <hr>
         <div class="results">
-            <h3>42%</h3>
+            <h3>{Math.round(chartData[1].seats / 199 * 100)}%</h3>
         </div>
-        <img src="/images/candidate/fidesz.png" alt="Fidesz" class="fidesz" />
+        <img src="/images/candidate/{chartData[1].id}.png" alt={chartData[1].name} style={`background-color: ${chartData[1].color}66`} />
     </div>
+    {/if}
 </article>
 
 <style lang="scss">
@@ -58,13 +82,6 @@
             width: 36px;
             height: 36px;
             border-radius: 50%;
-
-            &.tisza {
-                background-color: #00359c66;
-            }
-            &.fidesz {
-                background-color: #fd810066;
-            }
         }
 
         .results {

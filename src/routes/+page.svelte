@@ -1,18 +1,20 @@
 <script lang="ts">
-    import type { Party, PollData } from "$lib/types";
+    import type { PollData, Simulation } from "$lib/types";
     import { onMount } from "svelte";
     import {
         pollData,
-        fetchPollData,
+        simulationData,
+        fetchData,
         pollsterGroups,
     } from "../stores/dataStore";
     import RecentPollsAside from "../components/RecentPollsAside.svelte";
     import MiniMandateProjection from "../components/MiniMandateProjection.svelte";
     import PollsCardFromData from "../components/PollsCardFromData.svelte";
 
-    let data: Record<"sure_voters" | "all_voters", PollData> = {
-        sure_voters: [],
-        all_voters: [],
+    let data = {
+        sure_voters: [] as PollData,
+        all_voters: [] as PollData,
+        simulationData: {} as Record<string, Simulation>,
     };
 
     let mandateProjectionOptions = {
@@ -26,9 +28,13 @@
         3: "az",
     };
 
-    onMount(fetchPollData);
+    onMount(fetchData);
 
-    $: data = $pollData;
+    $: data = {
+        sure_voters: $pollData.sure_voters,
+        all_voters: $pollData.all_voters,
+        simulationData: $simulationData,
+    }
 </script>
 
 <aside id="mandate-projection">
@@ -51,7 +57,7 @@
     </p>
     <div class="mandatesContainer">
         <article class="visualization">
-            <MiniMandateProjection />
+            <MiniMandateProjection data={data.simulationData} />
         </article>
     </div>
     <p>

@@ -1,17 +1,11 @@
 <script lang="ts">
-    import { onMount } from "svelte";
     import MiniMandateProjection from "./MiniMandateProjection.svelte";
     import {
-        fetchPollData,
-        pollData,
         pollsterGroups,
     } from "../stores/dataStore";
-    import type { PollData } from "$lib/types";
+    import type { Simulation } from "$lib/types";
 
-    let data: Record<"sure_voters" | "all_voters", PollData> = {
-        sure_voters: [],
-        all_voters: [],
-    };
+    export let data = {} as Record<string, Simulation>;
 
     let mandateProjectionOptions = {
         pollsterGroupIndex: 0 as 0 | 1 | 2,
@@ -23,10 +17,6 @@
         2: "a\xa0",
         3: "az",
     };
-
-    onMount(fetchPollData);
-
-    $: data = $pollData;
 </script>
 
 <aside id="mandate-projection">
@@ -49,7 +39,7 @@
     </p>
     <div class="mandatesContainer">
         <article class="visualization">
-            <MiniMandateProjection />
+            <MiniMandateProjection {data} />
         </article>
     </div>
     <p>

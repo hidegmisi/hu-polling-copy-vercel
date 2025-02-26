@@ -5,8 +5,8 @@
     import { partyData } from "../stores/dataStore";
 
     export let party: Party;
-    export let data: number[];
-    export let median: number;
+    export let data: number[] = [];
+    export let median: number = 0;
 
     let width = 450;
     let height = 150;
@@ -16,6 +16,15 @@
     let svg;
 
     onMount(() => {
+        const loadingInterval = setInterval(() => {
+            if (data.length) {
+                clearInterval(loadingInterval);
+                drawChart();
+            }
+        }, 10);
+    });
+
+    function drawChart() {
         const selectedData = data;
         const svgSelection = d3.select(svg);
 
@@ -49,7 +58,7 @@
 
         const yScale = d3
         .scaleLinear()
-        .domain([0, 0.08])
+        .domain([0, max])
         .range([yMidPoint, margin.top]);
 
         // 5) Line generator:
@@ -217,7 +226,7 @@
             .style("font-weight", 400)
             .style("fill", "#333")
             .text("199");
-    });    
+    }    
 </script>
 
 <article id="mandate-visualization">

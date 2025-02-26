@@ -1,6 +1,6 @@
 import { writable } from 'svelte/store';
-import { getPollData } from '../lib/dataUtils';
-import type { PartyData, PollData, PollsterData, PollsterGroup } from '../lib/types';
+import { getData } from '../lib/dataUtils';
+import type { PartyData, PollData, PollsterData, PollsterGroup, Simulation } from '../lib/types';
 
 export const partyData = {
     'fidesz': {
@@ -110,17 +110,19 @@ export const pollData = writable<Record<'sure_voters' | 'all_voters', PollData>>
     sure_voters: [],
     all_voters: [],
 });
+export const simulationData = writable<Record<string, Simulation>>({});
 
-export async function fetchPollData() {
+export async function fetchData() {
     try {
-        const data = await getPollData();
+        const data = await getData();
         if (!data) {
             throw new Error('Could not import data.');
         }
 
         console.log('Data fetched:', data);
 
-        pollData.set(data);
+        pollData.set(data.pollData);
+        simulationData.set(data.simulationData);
     } catch (error) {
         console.error('Error fetching data:', error);
     }

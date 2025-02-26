@@ -4,7 +4,7 @@
     import { onMount } from "svelte";
     import {
         pollData,
-        fetchPollData,
+        fetchData,
     } from "../../../stores/dataStore";
     import type { PollData } from "$lib/types";
     import PollsCardFromData from "../../../components/PollsCardFromData.svelte";
@@ -17,7 +17,7 @@
         all_voters: [] as PollData,
     };
 
-    onMount(fetchPollData);
+    onMount(fetchData);
 
     $: data = $pollData;
 

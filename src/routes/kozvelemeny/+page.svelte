@@ -1,7 +1,7 @@
 <script lang="ts">
     import type { PollData } from "$lib/types";
     import { onMount } from "svelte";
-    import { pollData, fetchPollData } from "../../stores/dataStore";
+    import { pollData, fetchData } from "../../stores/dataStore";
     import InteractivePollsCard from "../../components/InteractivePollsCard.svelte";
     import RecentPollsAside from "../../components/RecentPollsAside.svelte";
     import PollsCardFromData from "../../components/PollsCardFromData.svelte";
@@ -18,7 +18,7 @@
         3: "az",
     }
 
-    onMount(fetchPollData);
+    onMount(fetchData);
 
     $: data = $pollData;
 </script>
