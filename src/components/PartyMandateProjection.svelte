@@ -9,7 +9,7 @@
     export let median: number = 0;
 
     let width = 600;
-    let height = 220;
+    let height = 150;
 
     let margin = { top: 50, right: 30, bottom: 5, left: 30 };
 

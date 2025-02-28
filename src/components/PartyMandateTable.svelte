@@ -8,48 +8,69 @@
 <section class="mandateTable">
     {#each Object.keys(data).sort((a, b) => data[b] - data[a]) as party, i}
         <article>
-            <div class="imgContainer">
-                <img src={`/images/party-logo/${party}.png`} alt={partyData[party as Party].name} />
-            </div>
-            <h3>{partyData[party as Party].name}</h3>
-            <div class="percentage">
-                {(data[party as Party] / 199 * 100).toFixed(0)}%
-            </div>
+            <header>
+                <div
+                    class="dot"
+                    style="
+                        background-color: {partyData[party as Party].color}33;
+                        border: 1px solid {partyData[party as Party].color};
+                    "
+                ></div>
+                <h3>{partyData[party as Party].name}</h3>
+                <!-- <div class="imgContainer">
+                    <img src={`/images/party-logo/${party}.png`} alt={partyData[party as Party].name} />
+                </div> -->
+                <div class="percentage">
+                    {(data[party as Party] / 199 * 100).toFixed(0)}%
+                </div>
+            </header>
             <p>{data[party as Party]} mandátum</p>
         </article>
-        {#if i < Object.keys(data).length - 1}
+        <!-- {#if i < Object.keys(data).length - 1}
             <div class="divider"></div>
-        {/if}
+        {/if} -->
     {/each}
 </section>
 
 <style lang="scss">
     .mandateTable {
-        display: flex;
-        flex-wrap: wrap;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
         gap: 1rem;
         margin: 1rem 0;
         padding: 0 12px;
-        background-color: #f9f9f9;
-        border: 2px solid #f5f5f5;
 
         article {
             display: flex;
+            align-items: start;
             flex-direction: column;
-            align-items: center;
             gap: 6px;
-            min-width: 100px;
-            flex-grow: 1;
-            padding: 1rem 0;
+            padding: 12px;
+            border: 1px solid #eee;
+            //border-radius: 4px;
 
-            h3 {
-                font-size: 18px;
-                font-weight: 400;
+            header {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                width: 100%;
+
+                .dot {
+                    width: 16px;
+                    height: 16px;
+                    border-radius: 50%;
+                }
+                
+                h3 {
+                    font-size: 1rem;
+                    font-weight: 400;
+                }
             }
 
+
             .percentage {
-                margin: 6px 0;
-                font-size: 2rem;
+                margin-left: auto;
+                font-size: 1rem;
                 font-weight: 400;
             }
 
@@ -57,8 +78,8 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                width: 32px;
-                height: 32px;
+                width: 24px;
+                height: 24px;
                 
                 img {
                     width: 100%;

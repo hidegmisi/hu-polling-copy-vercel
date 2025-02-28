@@ -73,6 +73,19 @@
             <h3>{Math.round(orderedChartData[0].seats / 199 * 100)}%</h3>
         </div>
         <hr>
+        <div class="textContainer">
+            <h3>Győztes:</h3>
+            <div class="standing">
+                {#if (orderedChartData[0].seats / 199) < 0.5}
+                Nincs többség
+                {:else if (orderedChartData[0].seats / 199) < 0.66}
+                {orderedChartData[0].name} többség
+                {:else}
+                {orderedChartData[0].name} kétharmad
+                {/if}
+            </div>
+        </div>
+        <hr>
         <div class="results">
             <h3>{Math.round(orderedChartData[1].seats / 199 * 100)}%</h3>
         </div>
@@ -84,7 +97,8 @@
 <style lang="scss">
     .chartInfos {
         position: relative;
-        max-width: 210px;
+        /* max-width: 210px; */
+        max-width: fit-content;
         margin: 0 auto;
         display: flex;
         justify-content: space-between;
@@ -127,14 +141,14 @@
         }
 
         .textContainer {
+            display: flex;
+            flex-direction: column;
             align-items: center;
             padding: 0 8px;
 
-            h2#leaderText {
-                font-size: 0.9rem;
-                font-weight: 600;
-                padding: 2px 3px;
-                padding-bottom: 0;
+            h3 {
+                font-size: 1rem;
+                font-weight: normal;
             }
             .standing {
                 font-size: 0.75rem;

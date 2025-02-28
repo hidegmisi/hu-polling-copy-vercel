@@ -225,8 +225,8 @@
 
         .divider {
             grid-column: 1 / 3;
-            border-top: 2px solid #eee;
-            margin-top: 1rem;
+            border-top: 1px solid #eee;
+            margin-top: 6px;
         }
     }
 
