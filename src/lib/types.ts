@@ -42,6 +42,13 @@ export type Poll = {
 
 export type Simulation = {
     medians: Record<Party, number>;
+    modes: Record<Party, number>;
+    seats: Record<Party, number>;
+    metadata: {
+        name: string;
+        polls?: Poll[];
+        description?: string;
+    }
 } & {
     [party in Party]?: number[];
 }
@@ -63,7 +70,7 @@ export type ChartData = {
 
 export type DateRange = { start: Date, end: Date };
 
-export type Party = 'fidesz' | 'tisza' | 'dk_mszp_p' | 'mihazank' | 'mkkp' | 'momentum' | 'semleges' | 'unsure';
+export type Party = 'fidesz' | 'tisza' | 'dk_mszp_p' | 'mihazank' | 'mkkp' | 'momentum' | 'minority' | 'unsure';
 
 export type PartyData = Record<Party, { name: string; color: string; }>;
 

@@ -31,7 +31,7 @@ export const charts: Record<string, ChartData> = {
         renderOptions: { aspectRatio: 3 / 2 },
     },
     'all-parties': {
-        title: "Összes párt támogatottsága",
+        title: "Parlamentbe jutásra esélyes pártok támogatottsága",
         dataSelects: ["pollster_group", "voter_type"],
         dateRange: { start: new Date(2018, 0, 1), end: new Date(2026, 3, 4) },
         annotations: [

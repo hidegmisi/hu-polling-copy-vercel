@@ -27,8 +27,8 @@ export const partyData = {
         name: 'Momentum',
         color: '#8e6fcd',
     },
-    'semleges': {
-        name: 'Semleges',
+    'minority': {
+        name: 'Nemzetiségi',
         color: '#d3d3d3',
     },
     'unsure': {

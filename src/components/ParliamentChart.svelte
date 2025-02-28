@@ -33,9 +33,16 @@
                 id: party,
                 name: partyData[party].name,
                 color: partyData[party].color,
-                seats: data.main.medians[party],
+                seats: data.main.seats[party],
             });
         }
+
+        chartData.push({
+            id: "minority",
+            name: "Nemzetiségi képviselők",
+            color: partyData["minority"].color,
+            seats: 1,
+        })
 
         chartData.sort((a, b) => b.seats - a.seats);
         chart.update(chartData)

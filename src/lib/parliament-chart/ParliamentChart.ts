@@ -227,5 +227,23 @@ export default class ParliamentChart {
             .attr("fill", "#333")
             .attr("font-size", "12px")
             .text("Többség");
+
+        const absMajorityLine = this.chartGroup.append("line")
+            .attr("x1", Math.cos(Math.PI - (Math.PI * 2/3)) * (this.innerRadius - 40) + this.center[0])
+            .attr("y1", -Math.sin(Math.PI - (Math.PI * 2/3)) * (this.innerRadius - 40) + this.center[1])
+            .attr("x2", Math.cos(Math.PI - (Math.PI * 2/3)) * (this.outerRadius + 40) + this.center[0])
+            .attr("y2", -Math.sin(Math.PI - (Math.PI * 2/3)) * (this.outerRadius + 40) + this.center[1])
+            .attr("stroke", "#aaa")
+            .attr("stroke-dasharray", "2,2")
+            .attr("stroke-width", 2);
+
+        const absMajorityText = this.chartGroup.append("text")
+            .attr("x", Math.cos(Math.PI - (Math.PI * 2/3)) * (this.outerRadius + 40) + this.center[0] + 5)
+            .attr("y", -Math.sin(Math.PI - (Math.PI * 2/3)) * (this.outerRadius + 40) + this.center[1])
+            .style("dominant-baseline", "text-before-edge")
+            .attr("dy", -2)
+            .attr("fill", "#333")
+            .attr("font-size", "12px")
+            .text("Kétharmad");
     }
 }
