@@ -9,6 +9,7 @@
     import type { Party, Simulation } from "$lib/types";
 
     let data: Record<string, Simulation> = {};
+    let selectedSimulation = "main";
 
     let aside: HTMLElement;
 
@@ -31,42 +32,73 @@
         window.addEventListener("scroll", keepAsidePosition);
     });
 
-    $: {
-        data = $simulationData;
-        
-    };
+    function selectSimulation(simulation: string) {
+        selectedSimulation = simulation;
+    }
+
+    $: data = $simulationData;
 </script>
 
 <aside bind:this={aside}>
-    <MandateProjectionAside {data} />
+    <MandateProjectionAside {data} on:selectSimulation={e => selectSimulation(e.detail)} />
 </aside>
 <main>
     <section class="parliamentChart">
         <div class="textBlock">
             <h2>A legvalószínűbb parlament</h2>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos, nemo voluptate dolor aut corporis eveniet facere unde, quia sit, fugiat optio odit enim fuga obcaecati laboriosam accusantium repudiandae soluta. Quo?</p>
+            <p>
+                Az alábbi ábrán a <span class="simulation">{data[selectedSimulation]?.metadata.name}</span>
+                országos átlaga és az EP-választás választási földrajza alapján szimulált országgyűlési
+                választás eredménye látható.
+            </p>
         </div>
-        <ParliamentChart {data}/>
-        <PartyMandateTable data={data['main']?.seats} />
+        <ParliamentChart {data} {selectedSimulation}/>
+        <PartyMandateTable data={data[selectedSimulation]?.seats}/>
         <div class="textBlock">
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos, nemo voluptate dolor aut corporis eveniet facere unde, quia sit, fugiat optio odit enim fuga obcaecati laboriosam accusantium repudiandae soluta. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aut nesciunt expedita magnam deserunt, itaque nobis reiciendis sequi voluptas distinctio veniam cumque temporibus dolorem asperiores ipsum rem quaerat est. Laboriosam, suscipit!</p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos, nemo voluptate
+                dolor aut corporis eveniet facere unde, quia sit, fugiat optio odit enim fuga obcaecati
+                laboriosam accusantium repudiandae soluta. Lorem, ipsum dolor sit amet consectetur
+                adipisicing elit. Aut nesciunt expedita magnam deserunt, itaque nobis reiciendis sequi
+                voluptas distinctio veniam cumque temporibus dolorem asperiores ipsum rem quaerat est.
+                Laboriosam, suscipit!
+            </p>
         </div>
     </section>
     <section class="partyProjections">
         <div class="textBlock">
             <h2>Várható mandátumok pártonként</h2>
-            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Soluta accusantium impedit repellat dolorem ullam totam veritatis nemo nam, et reprehenderit nostrum sed labore repudiandae quis tenetur illum necessitatibus provident sit. Provident delectus, sunt perspiciatis sed alias, exercitationem dolorum modi quo animi repudiandae qui unde. Dolorem incidunt debitis fugit esse! In, magnam! Debitis!</p>
+            <p>
+                Az alábbi ábrán a <span class="simulation">{data[selectedSimulation]?.metadata.name}</span>
+                országos átlaga alapján lefuttatott 10.000 szimuláció eredményeinek megoszlása látható.
+            </p>
+            <div class="explainer">
+                <div class="example median">
+                    <img src="/images/hungary-shape.webp" alt="Választási földrajz">
+                </div>
+                <p>
+                    A szimuláció azt feltételezi, hogy az EP-választás óta nem változott a választási
+                    földrajz, de az ellenzéki szavazók nagyobb része szavaz majd a Tiszára.
+                    <a href="#">Módszertan</a>
+                </p>
+            </div>
             <div class="explainer">
                 <div class="example median">
                     <img src="/images/median-example.webp" alt="Medián jelzés példa">
                 </div>
-                <p>A függőleges vonal a középérteket jelzi, vagyis ugyanannyi eséllyel kap ennél több vagy kevesebb mandátumot egy adott párt.</p>
+                <p>
+                    A függőleges vonal a középérteket jelzi, vagyis ugyanannyi szimulációban kap ennél
+                    több vagy kevesebb mandátumot egy adott párt.
+                </p>
             </div>
             <div class="explainer">
                 <div class="example">
                     <img src="/images/PDF-example.webp" alt="Valószínűség eloszlás példa">
                 </div>
-                <p>A színezett terület a lehetséges eredményeket mutatja. A mandátumszámokhoz tartozó magasság jelzi, hogy milyen valószínű egy adott kimenetel.</p>
+                <p>
+                    A színezett terület a lehetséges eredményeket mutatja. Minél magasabb egy ponton,
+                    annál több szimulációban szerzett annyi mandátumot egy adott párt.
+                </p>
             </div>
         </div>
         {#if data.main}
@@ -78,11 +110,11 @@
                     </header>
                     <PartyMandateProjection
                         party={party as Party}
-                        data={data.main[party as Party]} 
-                        median={data.main.medians[party as Party]}
+                        data={data[selectedSimulation][party as Party]} 
+                        median={data[selectedSimulation].medians[party as Party]}
                     />
                 </article>
-                {#if i < Object.keys(data.main.medians).length - 1}
+                {#if i < Object.keys(data[selectedSimulation].medians).length - 1}
                     <div class="divider"></div>
                 {/if}
             {/each}
@@ -90,7 +122,12 @@
     </section>
     <section class="map">
         <h2>Választókerületek legvalószínűbb eredménye</h2>
-        <p>Országos mandátumok várható eloszlása a közvélemény-kutatások alapján.</p>
+        <p>
+            Az alábbi térképen az egyéni választókerületek győztesei láthatóak, a
+            <span class="simulation">{data[selectedSimulation]?.metadata.name}</span>
+            országos átlaga és az EP-választás választási földrajza alapján szimulált
+            országgyűlési választás alapján.
+        </p>
         <OevkMap />
     </section>
 </main>
@@ -191,6 +228,13 @@
             border-top: 2px solid #eee;
             margin-top: 1rem;
         }
+    }
+
+    span.simulation {
+        padding: 3px;
+        border-radius: 4px;
+        border: 1px solid #6de635;
+        font-family: 'Helvetica Neue', sans-serif;
     }
 
     @media (min-width: 600px) {

@@ -13,20 +13,27 @@
 
     let margin = { top: 50, right: 30, bottom: 5, left: 30 };
 
-    let svg;
+    let svg: SVGElement;
 
     onMount(() => {
         const loadingInterval = setInterval(() => {
             if (data.length) {
                 clearInterval(loadingInterval);
-                drawChart();
+                drawChart(data);
             }
         }, 10);
     });
 
-    function drawChart() {
-        const selectedData = data;
+    $: {
+        if (svg) {
+            drawChart(data);
+        }
+    }
+
+    function drawChart(selectedData) {
         const svgSelection = d3.select(svg);
+
+        svgSelection.selectAll("*").remove();
 
         // 1) Convert your data into two separate arrays of { x, y } objects:
         //    - Fidesz is index 0 in each pair

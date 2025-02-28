@@ -1,55 +1,41 @@
 <script lang="ts">
-    import MiniMandateProjection from "./MiniMandateProjection.svelte";
-    import {
-        pollsterGroups,
-    } from "../stores/dataStore";
     import type { Simulation } from "$lib/types";
+    import { createEventDispatcher, onMount } from "svelte";
 
     export let data = {} as Record<string, Simulation>;
 
-    let mandateProjectionOptions = {
-        pollsterGroupIndex: 0 as 0 | 1 | 2,
-    };
+    let selectedSimulation = "main";
 
-    let articleMap = {
-        0: "az",
-        1: "a\xa0",
-        2: "a\xa0",
-        3: "az",
-    };
+    const dispatch = createEventDispatcher();
+
+    function selectSimulation(simulation: string) {
+        selectedSimulation = simulation;
+        dispatch("selectSimulation", simulation);
+    }
 </script>
 
 <aside id="mandate-projection">
     <h2>Mandátumbecslés</h2>
-    <!-- <p>
-        A Fidesz és a Tisza parlamenti képviselőinek várható száma.
-    </p> -->
     <p>
-        Képviselők várható aránya {articleMap[
-            mandateProjectionOptions.pollsterGroupIndex
-        ]}
-        <select bind:value={mandateProjectionOptions.pollsterGroupIndex}>
-            {#each pollsterGroups as group, i}
-                <option value={i}>{group}</option>
-            {/each}
-        </select>
-        közvélemény-kutató{!mandateProjectionOptions.pollsterGroupIndex
-            ? ""
-            : "k"} adatai alapján:
+        Az EP-választás választási földrajzából kiindulva,
+        az alábbi adatok alapján:
     </p>
-    <div class="mandatesContainer">
-        <article class="visualization">
-            <MiniMandateProjection {data} />
-        </article>
+    <div class="simulations">
+        {#each Object.keys(data) as key}
+            <button
+                type="button"
+                on:click={() => selectSimulation(key)}
+                class:selected={selectedSimulation === key}
+            >
+                <h3>{data[key].metadata.name}</h3>
+                <p>
+                    {data[key].metadata.description}
+                </p>
+            </button>
+        {/each}
     </div>
-    <p>
-        Részletes adatok és alakulásuk a <a href="/mandatumbecsles"
-            >mandátumbecslés</a
-        > oldalon.
-    </p>
     <div class="bottomMenu">
         <div class="item">Módszertan</div>
-        <div class="item">Megosztás</div>
     </div>
 </aside>
 
@@ -74,9 +60,42 @@
             margin-top: 12px;
         }
 
-        .visualization {
+        .simulations {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
             padding: 1rem 0;
+
+            button {
+                text-align: left;
+                padding: 8px 6px;
+                border: 1px solid #eee;
+                border-radius: 4px;
+                background-color: #f9f9f9;
+                cursor: pointer;
+
+                &.selected {
+                    padding: 7px 5px;
+                    border-width: 2px;
+                    border-color: #6de635;
+                    
+                    h3 {
+                        font-weight: 400;
+                    }
+                }
+
+                h3 {
+                    margin: 0;
+                    font-weight: 300;
+                    font-size: 1rem;
+                }
+
+                p {
+                    margin-top: 3px;
+                }
+            }
         }
+
         .bottomMenu {
             margin-top: 1rem;
             display: flex;

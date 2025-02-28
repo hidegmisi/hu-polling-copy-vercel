@@ -5,31 +5,42 @@
     import type { Party, Simulation } from "$lib/types";
 
     export let data = {} as Record<string, Simulation>;
+    export let selectedSimulation = "main";
 
-    let chart;
+    let chart: ParliamentChart = null;
     let chartData = [] as { id: Party, name: string; color: string; seats: number }[];
     let orderedChartData = [] as { id: Party, name: string; color: string; seats: number }[];
 
     onMount(() => {
         const loadingInterval = setInterval(() => {
-            if (Object.keys(partyData).length && data.main.medians) {
+            if (Object.keys(partyData).length && data[selectedSimulation]?.medians) {
                 clearInterval(loadingInterval);
-                drawChart();
+                drawChart(data[selectedSimulation]);
             }
         }, 10);
     });
 
-    function drawChart() {
-        chart = new ParliamentChart("#chart", {
-            width: 600,
-            height: 350,
-            seatRadius: 7,
-            seatPadding: 4,
-            // You can adjust these as needed.
-            margin: { top: 20, right: 20, bottom: 20, left: 20 },
-        });
+    $: {
+        if (chart) {
+            drawChart(data[selectedSimulation]);
+        }
+    }
 
-        const partyOrder = data.main.seats["fidesz"] > data.main.seats["tisza"] ?
+    function drawChart(simulation: Simulation) {
+        if (!chart) {
+            chart = new ParliamentChart("#chart svg", {
+                width: 600,
+                height: 350,
+                seatRadius: 7,
+                seatPadding: 4,
+                // You can adjust these as needed.
+                margin: { top: 20, right: 20, bottom: 20, left: 20 },
+            });
+        } else {
+            chartData = [];
+        }
+
+        const partyOrder = simulation.seats["fidesz"] > simulation.seats["tisza"] ?
                             ["fidesz", "minority", "mihazank", "dk_mszp_p", "mkkp", "tisza"] :
                             ["tisza", "mkkp", "dk_mszp_p", "mihazank", "minority", "fidesz"];
         
@@ -38,7 +49,7 @@
                 id: party,
                 name: partyData[party].name,
                 color: partyData[party].color,
-                seats: data.main.seats[party] ?? 1,
+                seats: simulation.seats[party] ?? 1,
             });
         }
 
@@ -52,7 +63,9 @@
 </script>
 
 <article>
-    <div id="chart"></div>
+    <div id="chart">
+        <svg></svg>
+    </div>
     {#if orderedChartData.length}
     <div class="chartInfos">
         <img src="/images/candidate/{orderedChartData[0].id}.png" alt={orderedChartData[0].name} style={`background-color: ${orderedChartData[0].color}66`} />

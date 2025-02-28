@@ -51,11 +51,10 @@ export default class ParliamentChart {
     private innerRadius: number;
     private outerRadius: number;
     private center: [number, number];
-    private container: d3.Selection<HTMLElement, unknown, null, undefined>;
     private svg: d3.Selection<SVGSVGElement, unknown, null, undefined>;
     private chartGroup: d3.Selection<SVGGElement, unknown, null, undefined>;
 
-    constructor(selector: string | HTMLElement, options: ParliamentChartOptions = {}) {
+    constructor(selector: string | SVGSVGElement, options: ParliamentChartOptions = {}) {
         // Set overall dimensions and margins.
         this.width = options.width ?? 600;
         this.height = options.height ?? 400;
@@ -87,10 +86,12 @@ export default class ParliamentChart {
         this.center = options.center ?? [this.chartWidth / 2, this.chartHeight];
 
         // Create the SVG container with a viewBox for scaling.
-        this.container = typeof selector === 'string' ? d3.select(selector) : d3.select(selector);
-        this.svg = this.container.append('svg')
+        this.svg = typeof selector === 'string' ? d3.select(selector) : d3.select(selector);
+        
+        this.svg
             .attr('viewBox', `0 0 ${this.width} ${this.height}`)
             .attr('preserveAspectRatio', 'xMidYMid meet');
+        
         this.chartGroup = this.svg.append('g')
             .attr('transform', `translate(${this.margin.left},${this.margin.top})`);
     }
