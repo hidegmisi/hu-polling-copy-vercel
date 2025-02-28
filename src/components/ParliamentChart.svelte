@@ -8,6 +8,7 @@
 
     let chart;
     let chartData = [] as { id: Party, name: string; color: string; seats: number }[];
+    let orderedChartData = [] as { id: Party, name: string; color: string; seats: number }[];
 
     onMount(() => {
         const loadingInterval = setInterval(() => {
@@ -27,44 +28,42 @@
             // You can adjust these as needed.
             margin: { top: 20, right: 20, bottom: 20, left: 20 },
         });
+
+        const partyOrder = data.main.seats["fidesz"] > data.main.seats["tisza"] ?
+                            ["fidesz", "minority", "mihazank", "dk_mszp_p", "mkkp", "tisza"] :
+                            ["tisza", "mkkp", "dk_mszp_p", "mihazank", "minority", "fidesz"];
         
-        for (const party of (["fidesz", "tisza", "mihazank", "dk_mszp_p", "mkkp"] as (keyof typeof partyData)[]) ) {
+        for (const party of (partyOrder as (keyof typeof partyData)[]) ) {
             chartData.push({
                 id: party,
                 name: partyData[party].name,
                 color: partyData[party].color,
-                seats: data.main.seats[party],
+                seats: data.main.seats[party] ?? 1,
             });
         }
 
-        chartData.push({
-            id: "minority",
-            name: "Nemzetiségi képviselők",
-            color: partyData["minority"].color,
-            seats: 1,
-        })
-
-        chartData.sort((a, b) => b.seats - a.seats);
         chart.update(chartData)
 
         chartData = [...chartData];
+
+        orderedChartData = chartData.sort((a, b) => b.seats - a.seats);
     }
 
 </script>
 
 <article>
     <div id="chart"></div>
-    {#if chartData.length}
+    {#if orderedChartData.length}
     <div class="chartInfos">
-        <img src="/images/candidate/{chartData[0].id}.png" alt={chartData[0].name} style={`background-color: ${chartData[0].color}66`} />
+        <img src="/images/candidate/{orderedChartData[0].id}.png" alt={orderedChartData[0].name} style={`background-color: ${orderedChartData[0].color}66`} />
         <div class="results">
-            <h3>{Math.round(chartData[0].seats / 199 * 100)}%</h3>
+            <h3>{Math.round(orderedChartData[0].seats / 199 * 100)}%</h3>
         </div>
         <hr>
         <div class="results">
-            <h3>{Math.round(chartData[1].seats / 199 * 100)}%</h3>
+            <h3>{Math.round(orderedChartData[1].seats / 199 * 100)}%</h3>
         </div>
-        <img src="/images/candidate/{chartData[1].id}.png" alt={chartData[1].name} style={`background-color: ${chartData[1].color}66`} />
+        <img src="/images/candidate/{orderedChartData[1].id}.png" alt={orderedChartData[1].name} style={`background-color: ${orderedChartData[1].color}66`} />
     </div>
     {/if}
 </article>
