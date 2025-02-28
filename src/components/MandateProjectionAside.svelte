@@ -18,7 +18,7 @@
     <h2>Mandátumbecslés</h2>
     <p>
         Az EP-választás választási földrajzából kiindulva,
-        az alábbi adatok alapján:
+        az alábbi szimuláció alapján:
     </p>
     <div class="simulations">
         {#each Object.keys(data) as key}
