@@ -1,48 +1,17 @@
 <script lang="ts">
+    import maplibregl from "maplibre-gl";
+    import "maplibre-gl/dist/maplibre-gl.css";
     import { onMount } from "svelte";
-    import type { Map } from "leaflet";
-    import { partyData } from "../stores/dataStore";
-    
-    let map: Map;
-    let geojsonData;
-    let L: typeof import("leaflet");
 
-    // Load the GeoJSON file
-    async function loadGeoJSON() {
-        const response = await fetch("/geo/oevks.geojson");
-        geojsonData = await response.json();
-        
-        for (let feature of geojsonData.features) {
-            feature.properties = {
-                ...feature.properties,
-                color: Math.random() > 0.5 ? partyData["tisza"].color : partyData["fidesz"].color,
-            };
-        }
-        
-        if (map && L) {
-            L.geoJSON(geojsonData, {
-                style: feature => ({
-                    color: feature?.properties.color,
-                    weight: 1,
-                    fillOpacity: 0.3,
-                }),
-            }).addTo(map);
-        }
-    }
+    onMount(() => {
+        const map = new maplibregl.Map({
+            container: "map",
+            style: "https://cors-anywhere.herokuapp.com/https://tile.tracestrack.com/v/maps/lite/style-hu.json?key=4310cac1701b2fc10569b55017f60a5f",
+            center: [19.5033, 47.1625], // Hungary's center
+            zoom: 7,
+        });
 
-    onMount(async () => {
-        L = await import("leaflet");
-        import("leaflet/dist/leaflet.css");
-
-        if (!L) return;
-
-        map = L.map("map").setView([47.1625, 19.5033], 7); // Centered on Hungary
-
-        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-            attribution: "&copy; OpenStreetMap contributors",
-        }).addTo(map);
-
-        loadGeoJSON();
+        map.addControl(new maplibregl.NavigationControl());
     });
 </script>
 
