@@ -326,7 +326,7 @@ export class ChartRenderer {
         const leftGridWidth = this.renderOptions.isInteractive
             ? width - this.margin.right
             : width - paddingLeftSizes[this.containerSizeCategory];
-            
+
         const yLeftGridSelection = this.gridGroup.selectAll("g.y-grid-left").data([null]);
         yLeftGridSelection.join(
             enter => {
@@ -539,9 +539,20 @@ export class ChartRenderer {
             .attr("height", height)
             .style("fill", "none")
             .style("pointer-events", "all")
-            .on("mousemove", (event) => this.handleMouseMove(event))
-            .on("mouseout", () => this.updateTooltips(this.dailyData[this.dailyData.length - 1]));
+            .style("touch-action", "none")
+            .on("pointerdown", (event) => {
+                event.target.setPointerCapture(event.pointerId);
+                this.handleMouseMove(event);
+            })
+            .on("pointermove", (event) => {
+                this.handleMouseMove(event);
+            })
+            .on("pointerup pointercancel", (event) => {
+                event.target.releasePointerCapture(event.pointerId);
+                this.updateTooltips(this.dailyData[this.dailyData.length - 1]);
+            });
 
+        this.mouseEventRect.node()?.addEventListener("touchmove", (event) => event.preventDefault());
 
         let clipPathSelection = this.svgDefs.selectAll(`#${this.clipPathId}`).data([null]);
         clipPathSelection.join(
@@ -568,11 +579,14 @@ export class ChartRenderer {
         this.updateTooltips(this.dailyData[this.dailyData.length - 1]);
     }
 
-    private handleMouseMove(event: MouseEvent) {
+    private handleMouseMove(event: MouseEvent | TouchEvent) {
         const { x } = this.context;
 
-        const [mouseX] = d3.pointer(event, this.svg.node());
+        const [mouseX] = d3.pointer(event, event.currentTarget);
         const hoveredDate = x.invert(mouseX);
+
+        console.log("Pointer X:", mouseX);
+
 
         // Find the closest data point for each party
         const closestData = this.dailyData.map((day) => ({
