@@ -87,7 +87,7 @@
                     <img src="/images/median-example.webp" alt="Medián jelzés példa">
                 </div>
                 <p>
-                    A függőleges vonal a középérteket jelzi, vagyis ugyanannyi szimulációban kap ennél
+                    A függőleges vonal a középérteket jelzi, vagyis ugyanannyi szimulációban kapott ennél
                     több vagy kevesebb mandátumot egy adott párt.
                 </p>
             </div>
@@ -96,8 +96,8 @@
                     <img src="/images/PDF-example.webp" alt="Valószínűség eloszlás példa">
                 </div>
                 <p>
-                    A színezett terület a lehetséges eredményeket mutatja. Minél magasabb egy ponton,
-                    annál több szimulációban szerzett annyi mandátumot egy adott párt.
+                    A színezett terület a lehetséges eredményeket és azok valószínűségét mutatja.
+                    Minél több szimulációban fordult elő egy mandátumszám, annál magasabb a terület.
                 </p>
             </div>
         </div>
@@ -128,7 +128,7 @@
             országos átlaga és az EP-választás választási földrajza alapján szimulált
             országgyűlési választás alapján.
         </p>
-        <OevkMap />
+        <OevkMap data={data[selectedSimulation]?.oevkDiffs} />
     </section>
 </main>
 

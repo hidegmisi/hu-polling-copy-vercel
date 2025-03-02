@@ -127,6 +127,17 @@
             .attr("x2", width - margin.right)
             .attr("stroke", "#333");
 
+        svgSelection
+            .append("text")
+            .attr("x", xScale(20))
+            .attr("y", yMidPoint + 6)
+            .attr("text-anchor", "start")
+            .attr("alignment-baseline", "text-before-edge")
+            .style("font-size", "12px")
+            .style("font-weight", 400)
+            .style("fill", "#333")
+            .text("mandátumok");
+
         // 11) Draw markers for majority and absolute majority
 
         svgSelection
