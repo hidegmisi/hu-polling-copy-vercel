@@ -121,13 +121,22 @@
         {/if}
     </section>
     <section class="map">
-        <h2>Választókerületek legvalószínűbb eredménye</h2>
+        <h2>Egyéni választókerületek térképe</h2>
         <p>
-            Az alábbi térképen az egyéni választókerületek győztesei láthatóak, a
+            Az alábbi térképen a 106 egyéni választókerület látható, és a 
             <span class="simulation">{data[selectedSimulation]?.metadata.name}</span>
-            országos átlaga és az EP-választás választási földrajza alapján szimulált
-            országgyűlési választás alapján.
+            által becsült várható különbség a két esélyes párt között.
         </p>
+        <div class="explainer" style="margin: 0;">
+            <div class="example median">
+                <img src="/images/hungary-shape.webp" alt="Választási földrajz">
+            </div>
+            <p>
+                A szimuláció azt feltételezi, hogy az EP-választás óta nem változott a választási
+                földrajz, de az ellenzéki szavazók nagyobb része szavaz majd a Tiszára.
+                <a href="#">Módszertan</a>
+            </p>
+        </div>
         <OevkMap data={data[selectedSimulation]?.oevkDiffs} />
     </section>
 </main>
@@ -158,32 +167,6 @@
                 &:first-child {
                     margin-bottom: 6px;
                 }
-
-                .explainer {
-                    display: flex;
-                    margin: 1rem 0;
-                    border: 1px solid #eee;
-                    background-color: #f9f9f9;
-                    padding: 12px 6px;
-
-                    p {
-                        margin: 0;
-                    }
-
-                    .example {
-                        flex-shrink: 0;
-                        margin-right: 12px;
-                        display: flex;
-                        width: 60px;
-                        
-                        img {
-                            width: 100%;
-                            object-fit: contain;
-                            filter: grayscale(1);
-                        }
-                    }
-                }
-
             }
 
             article {
@@ -235,6 +218,31 @@
         border-radius: 4px;
         border: 1px solid #6de635;
         font-family: 'Helvetica Neue', sans-serif;
+    }
+
+    .explainer {
+        display: flex;
+        margin: 1rem 0;
+        border: 1px solid #eee;
+        background-color: #f9f9f9;
+        padding: 12px 6px;
+
+        p {
+            margin: 0;
+        }
+
+        .example {
+            flex-shrink: 0;
+            margin-right: 12px;
+            display: flex;
+            width: 60px;
+            
+            img {
+                width: 100%;
+                object-fit: contain;
+                filter: grayscale(1);
+            }
+        }
     }
 
     @media (min-width: 600px) {
