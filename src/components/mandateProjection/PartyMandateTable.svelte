@@ -1,6 +1,6 @@
 <script lang="ts">
     import type { Party } from "$lib/types";
-    import { partyData } from "../stores/dataStore";
+    import { partyData } from "../../stores/dataStore";
 
     export let data = {} as Record<Party, number>;
 </script>
@@ -36,16 +36,15 @@
     .mandateTable {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-        gap: 1rem;
+        gap: 6px;
         margin: 1rem 0;
-        padding: 0 12px;
 
         article {
             display: flex;
             align-items: start;
             flex-direction: column;
             gap: 6px;
-            padding: 12px;
+            padding: 6px;
             border: 1px solid #eee;
             //border-radius: 4px;
 

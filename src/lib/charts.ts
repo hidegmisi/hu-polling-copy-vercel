@@ -56,8 +56,34 @@ export const charts: Record<string, ChartData> = {
         ],
         renderOptions: { aspectRatio: 3 / 2, yLims: [0, 0.59] },
     },
+    'all-parties-wide': {
+        title: "Parlamentbe jutásra esélyes pártok támogatottsága",
+        dataSelects: ["pollster_group", "voter_type"],
+        dateRange: { start: new Date(2018, 0, 1), end: new Date(2026, 3, 4) },
+        annotations: [
+            {
+                id: "ogy-18",
+                text: "OGY. 2018",
+                date: new Date(2018, 3, 8),
+                lineType: "dotted",
+            },
+            {
+                id: "ogy-22",
+                text: "OGY. 2022",
+                date: new Date(2022, 3, 3),
+                lineType: "dotted",
+            },
+            {
+                id: "ogy-26",
+                text: "OGY. 2026",
+                date: new Date(2026, 3, 4),
+                lineType: "dotted",
+            },
+        ],
+        renderOptions: { aspectRatio: 5 / 2, yLims: [0, 0.59] },
+    },
     'kiabrandult-fideszesek': {
-        title: "Kiábrándult fideszesek nyomában",
+        title: "Kiábrándult fideszesek?",
         dataSelects: ["pollster_group"],
         selectedParties: ["fidesz", "unsure"],
         voterType: "all_voters",

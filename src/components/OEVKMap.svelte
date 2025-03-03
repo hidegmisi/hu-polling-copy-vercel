@@ -266,6 +266,7 @@
 <style lang="scss">
     #mapContainer {
         position: relative;
+        margin: 1rem 0;
     }
     #map {
         width: 100%;

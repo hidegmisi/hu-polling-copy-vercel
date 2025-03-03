@@ -1,31 +1,30 @@
 <script lang="ts">
-    import type { PollData, Simulation } from "$lib/types";
+    import type { Party, PollData, Simulation } from "$lib/types";
     import { onMount } from "svelte";
     import {
         pollData,
         simulationData,
         fetchData,
         pollsterGroups,
+        partyData,
     } from "../stores/dataStore";
     import RecentPollsAside from "../components/RecentPollsAside.svelte";
-    import MiniMandateProjection from "../components/MiniMandateProjection.svelte";
+    import MiniMandateProjection from "../components/mandateProjection/MiniMandateProjection.svelte";
     import PollsCardFromData from "../components/PollsCardFromData.svelte";
+    import ParliamentChart from "../components/ParliamentChart.svelte";
+    import PartyMandateTable from "../components/mandateProjection/PartyMandateTable.svelte";
+    import OevkMap from "../components/OEVKMap.svelte";
+    import SectionCard from "../components/section/SectionCard.svelte";
+    import SectionTitle from "../components/section/SectionTitle.svelte";
+    import GridItem from "../components/grid/GridItem.svelte";
+    import GridSectionTitle from "../components/grid/GridSectionTitle.svelte";
+    import SimulationNameSpan from "../components/mandateProjection/SimulationNameSpan.svelte";
+    import ExplainerCard from "../components/section/ExplainerCard.svelte";
 
     let data = {
         sure_voters: [] as PollData,
         all_voters: [] as PollData,
         simulationData: {} as Record<string, Simulation>,
-    };
-
-    let mandateProjectionOptions = {
-        pollsterGroupIndex: 0 as 0 | 1 | 2,
-    };
-
-    let articleMap = {
-        0: "az",
-        1: "a\xa0",
-        2: "a\xa0",
-        3: "az",
     };
 
     onMount(fetchData);
@@ -37,55 +36,121 @@
     }
 </script>
 
-<aside id="mandate-projection">
-    <h2>Mandátumbecslés</h2>
-    <!-- <p>
-        A Fidesz és a Tisza parlamenti képviselőinek várható száma.
-    </p> -->
-    <p>
-        Képviselők várható aránya {articleMap[
-            mandateProjectionOptions.pollsterGroupIndex
-        ]}
-        <select bind:value={mandateProjectionOptions.pollsterGroupIndex}>
-            {#each pollsterGroups as group, i}
-                <option value={i}>{group}</option>
-            {/each}
-        </select>
-        közvélemény-kutató{!mandateProjectionOptions.pollsterGroupIndex
-            ? ""
-            : "k"} adatai alapján:
-    </p>
-    <div class="mandatesContainer">
-        <article class="visualization">
-            <MiniMandateProjection data={data.simulationData} />
-        </article>
-    </div>
-    <p>
-        Részletes adatok és alakulásuk a <a href="/mandatumbecsles"
-            >mandátumbecslés</a
-        > oldalon.
-    </p>
-    <div class="bottomMenu">
-        <div class="item">Módszertan</div>
-        <div class="item">Megosztás</div>
-    </div>
-</aside>
-<div id="fidesz-tisza">
+<GridItem variant="aside">
+    <aside id="mandate-projection">
+        <h2>Mandátumbecslés</h2>
+        <p>
+            A Fidesz és a Tisza képviselőinek várható aránya az EP-választás
+            és a friss kutatások átlaga alapján:
+        </p>
+        <div class="mandatesContainer">
+            <article class="visualization">
+                <MiniMandateProjection data={data.simulationData} />
+            </article>
+        </div>
+        <p>
+            Részletes adatok és alakulásuk a <a href="/mandatumbecsles"
+                >mandátumbecslés</a
+            > oldalon.
+        </p>
+        <div class="bottomMenu">
+            <div class="item">Módszertan</div>
+            <div class="item">Megosztás</div>
+        </div>
+    </aside>
+</GridItem>
+<GridItem variant="main">
     <PollsCardFromData {data} chart_id="fidesz-tisza" />
-</div>
-<div class="sectionTitle">
-    <h2>Közvélemény-kutatások</h2>
-</div>
-<RecentPollsAside {data} />
-<div id="all-parties">
+</GridItem>
+
+<GridItem variant="full">
+    <GridSectionTitle>Mandátumbecslés</GridSectionTitle>
+</GridItem>
+
+<GridItem variant="left-half" --grid-row="span 2">
+    <SectionCard id="parliament-chart">
+        <SectionTitle>A legvalószínűbb parlament</SectionTitle>
+        <p>
+            Az alábbi ábrán a <span class="simulation">{data.simulationData["main"]?.metadata.name}</span>
+            országos átlaga és az EP-választás választási földrajza alapján szimulált országgyűlési
+            választás eredménye látható.
+        </p>
+        <ParliamentChart data={data.simulationData} />
+        <PartyMandateTable data={data.simulationData["main"]?.seats} />
+    </SectionCard>
+</GridItem>
+<GridItem variant="right-half">
+    <SectionCard>
+        <SectionTitle>Egyéni választókerületek térképe</SectionTitle>
+        <p>
+            Az alábbi térképen a 106 egyéni választókerület látható, és a 
+            <SimulationNameSpan>{data.simulationData["main"]?.metadata.name}</SimulationNameSpan>
+            által becsült várható különbség a két esélyes párt között.
+        </p>
+        <OevkMap data={data.simulationData["main"]?.oevkDiffs} />
+    </SectionCard>
+</GridItem>
+<GridItem variant="right-half">
+    <ExplainerCard image="/images/hungary-shape.webp" alt="Választási földrajz" --margin="0 0 1rem 0">
+        A szimuláció azt feltételezi, hogy az EP-választás óta nem változott a választási
+        földrajz, de az ellenzéki szavazók nagyobb része szavaz majd a Tiszára.
+        <a href="#">Módszertan</a>
+    </ExplainerCard>
+    <SectionCard>
+        <p>Több szimuláció és ábra, részletesebb adatok, valamint módszertan a <a href="/mandatumbecsles">mandátumbecslés</a> oldalon.</p>
+    </SectionCard>
+</GridItem>
+
+<GridItem variant="full">
+    <GridSectionTitle>Közvélemény-kutatások</GridSectionTitle>
+</GridItem>
+<GridItem variant="aside">
+    <RecentPollsAside {data} />
+</GridItem>
+<GridItem variant="main">
     <PollsCardFromData {data} chart_id="all-parties" />
-</div>
-<PollsCardFromData {data} chart_id="kiabrandult-fideszesek" />
-<section id="polls-description" class="bodyContainer">
-    <h2>Nem tudom, hogy mi lehet itten</h2>
-</section>
-<PollsCardFromData {data} chart_id="ellenzek-2022-ota" />
-<aside></aside>
+</GridItem>
+
+<GridItem variant="full">
+    <GridSectionTitle>Rólunk</GridSectionTitle>
+</GridItem>
+<GridItem variant="aside">
+    <SectionCard>
+        <h2>Linkek</h2>
+        <ul>
+            <li><a href="https://kozvelemeny.org">- Közvélemény.org</a></li>
+            <li><a href="https://voxpopuli.444.hu">- Vox Populi a 444-en</a></li>
+            <li><a href="https://www.facebook.com/valasztasi.kalauz">- Választási Kalauz Facebook</a></li>
+        </ul>
+    </SectionCard>
+</GridItem>
+<GridItem variant="main">
+    <SectionCard>
+        <SectionTitle>Vox Populi</SectionTitle>
+        <p>
+            A Vox Populi oldal közvélemény-kutatásokkal és (többnyire magyarországi)
+            választásokkal kapcsolatos adatokat és elemzéseket közöl pártoktól és pénzbevételtől
+            függetlenül, a demokratikus politikai eszmék és gyakorlatok terjesztése mellett
+            elkötelezetten. A legfrissebb
+            <a href="https://www.facebook.com/valasztasi.kalauz/">rövidebb posztokat itt</a>,
+            a hosszabb elemzéseket pedig
+            <a href="https://kozvelemeny.wordpress.com/blog-feed/">itt találja meg</a>,
+            a jelenleg is aktuális korábbi szövegek javából pedig
+            <a href="https://kozvelemeny.org/2022/01/29/orokzold-posztok-a-vox-populin/">itt</a>,
+            illetve a 2021. április 2-án indult <a href="https://voxpopuli.444.hu/">https://voxpopuli.444.hu/</a>
+            oldalunkon talál egy-egy válogatást.
+        </p>
+        <h3>Ki a szerkesztő?</h3>
+        <p>
+            Munkaidőben a Közép-Európai Egyetem (CEU) kutatóprofesszora vagyok. Szakterületeim a választói magatartás, a kutatás-módszertan, és a választási rendszerek. 1990 óta foglalkozom ezekkel a témákkal, és azóta kb. 40 tudományos célú kérdőíves vizsgálatot vezettem Lengyelországban, Csehországban, Szlovákiában, Magyarországon és Romániában. Idézettségi adataimat <a href="https://scholar.google.com/citations?user=7mLMXH8AAAAJ&amp;hl=en&amp;oi=ao"> itt</a> találja meg. Első olyan cikkeim, amiben mások közvélemény-kutatásait értékeltem, 1998-ban jelentek meg a nyomtatott <a aria-label="Magyar Hirlapban (opens in a new tab)" href="https://web.archive.org/web/20071112095437/http://www.median.hu/object.7293a708-88dd-4f91-b192-d0853aa7f49a.ivy" target="_blank" rel="noreferrer noopener">Magyar Hirlapban</a> és <a aria-label="másutt (opens in a new tab)" href="http://www.personal.ceu.hu/departs/personal/Gabor_Toka/Papers/Toka99Polls.pdf" target="_blank" rel="noreferrer noopener">másutt</a>. Politikai aktivistaként a Közös Ország Mozgalom taktikai szavazást támogató közvélemény-kutatásain és hétpárti támogatottságú választási törvényjavaslatán, illetve választási megfigyelőként, szavazatszámlálóként, utcai és házról-házra kopogtató kampánymunkásként dolgoztam. Egy pártfüggetlen és szakmabeli ellenzéki aktivista perspektívájából írom tehát, ami itt megjelenik, és az olvasók figyelmén kívül semmit nem fogadok el érte.
+        </p>
+        <p>@ Tóka Gábor, 2019-</p>
+        <h3>Ki fejlesztette az oldalt?</h3>
+        <p>
+            Én.
+        </p>
+    </SectionCard>
+</GridItem>
 
 <style lang="scss">
     #mandate-projection {
@@ -98,8 +163,6 @@
         border: 1px solid #eee;
 
         h2 {
-            font-size: 22px;
-            font-weight: 400;
             margin-top: 8px;
             text-align: center;
         }
@@ -109,6 +172,8 @@
         }
 
         .visualization {
+            width: 100%;
+            margin: 0 auto;
             padding: 1rem 0;
         }
         .bottomMenu {
@@ -130,104 +195,32 @@
         }
     }
 
-    .sectionTitle {
-        display: flex;
-        justify-content: center;
-        margin-top: 2rem;
-        border-top: 1px solid #eee;
-        padding-top: 12px;
+    ul {
+        list-style-type: none;
+        padding: 0;
 
-        h2 {
-            font-weight: 400;
+        li {
+            margin-bottom: 6px;
+
+            a {
+                color: #3396ff;
+            }
         }
-    }
-
-    #polls-description {
-        padding: 8px 1rem;
-        border: 1px dashed #ddd;
-
-        h2 {
-            text-align: left;
-            font-size: 22px;
-            font-weight: 400;
-        }
-
-        p {
-            margin-top: 12px;
-        }
-    }
-
-    .bodyContainer {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-        max-width: 700px;
-        line-height: 1.4;
-        border: 1px dashed #ddd;
-        border-top: none;
-    }
-
-    article {
-        width: 100%;
-        margin: 0 auto;
-        padding: 8px 16px;
-    }
-
-    h1 {
-        font-size: 2rem;
-        font-weight: 500;
     }
 
     h2 {
         font-size: 22px;
-        font-weight: 500;
-        text-align: center;
+        font-weight: 400;
+    }
+
+    h3 {
+        margin-top: 16px;
+        font-size: 20px;
+        font-weight: 400;
     }
 
     p {
         font-size: 16px;
         margin-top: 12px;
-    }
-
-    @media (min-width: 600px) {
-        .sectionTitle {
-            grid-column: 1 / 3;
-        }
-
-        #fidesz-tisza,
-        #all-parties {
-            grid-column: 2 / 3;
-        }
-
-        #polls-description {
-            grid-column: 2 / 3;
-            grid-row: span 2;
-        }
-
-        .poll-graph {
-            grid-column: span 1;
-            grid-row: span 1;
-        }
-    }
-
-    @media (min-width: 800px) {
-        .sectionTitle {
-            grid-column: 1 / 5;
-        }
-
-        #fidesz-tisza,
-        #all-parties {
-            grid-column: 2 / 5;
-        }
-
-        #polls-description {
-            grid-column: 3 / 5;
-            grid-row: span 2;
-        }
-
-        .poll-graph {
-            grid-column: span 2;
-            grid-row: span 1;
-        }
     }
 </style>

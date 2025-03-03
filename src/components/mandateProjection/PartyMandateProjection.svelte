@@ -2,7 +2,7 @@
     import { onMount } from "svelte";
     import * as d3 from "d3";
     import type { Party } from "$lib/types";
-    import { partyData } from "../stores/dataStore";
+    import { partyData } from "../../stores/dataStore";
 
     export let party: Party;
     export let data: number[] = [];
