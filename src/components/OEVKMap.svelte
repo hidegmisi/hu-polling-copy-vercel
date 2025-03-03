@@ -19,29 +19,56 @@
         [23.896, 48.585 + 0.3],
     ] as LngLatBoundsLike;
 
-    // Updates the position of the arrow on the colorbar based on the diff value.
+    // Updates the arrow on the legend based on diff value,
+    // snapping to the center of the corresponding discrete category.
     function updateLegendArrow(diff: any) {
         const diffValue = parseFloat(diff);
-        // Map the diff value from the range [-0.3, 0.3] to [0, 100]%
-        const percentage = Math.max(
-            Math.min(diffValue, 0.3),
-            -0.3
-        ) * 100 / 0.6 + 50;
+        let position: number;
+        let category: string;
+        let textColor: string;
+        let opacity: number;
+
+        if (diffValue < -0.15) {
+            position = 10;
+            category = "Fidesz +15%";
+            textColor = partyData["fidesz"].color;
+            opacity = 1;
+        } else if (diffValue < -0.05) {
+            position = 30;
+            category = "Fidesz +5%";
+            textColor = partyData["fidesz"].color;
+            opacity = 0.2;
+        } else if (diffValue < 0.05) {
+            position = 50;
+            category = "Szoros";
+            textColor = "#fff";
+            opacity = 0.2;
+        } else if (diffValue < 0.15) {
+            position = 70;
+            category = "Tisza +5%";
+            textColor = partyData["tisza"].color;
+            opacity = 0.2;
+        } else {
+            position = 90;
+            category = "Tisza +15%";
+            textColor = partyData["tisza"].color;
+            opacity = 1;
+        }
+
         const arrow = document.getElementById("colorbar-arrow");
         const label = document.getElementById("colorbar-label");
         const text = label?.querySelector("text");
 
-        if (!arrow || !label || !text) return;
-        
-        arrow.style.left = percentage + "%";
-        arrow.style.display = "block";
-
-        label.style.display = "block";
-        text.innerHTML = "+" + Math.abs((diffValue * 100)).toFixed(0) + '%';
-        text.style.fill = diffValue > 0 ? partyData["tisza"].color : partyData["fidesz"].color;
-
-        label.style.left = percentage + "%";
-        
+        if (arrow) {
+            arrow.style.left = position + "%";
+            arrow.style.display = "block";
+        }
+        if (label && text) {
+            label.style.left = position + "%";
+            label.style.display = "block";
+            text.innerHTML = category;
+            text.style.fill = '#333';
+        }
     }
 
     $: if (map && data) {
@@ -97,12 +124,21 @@
             feature.properties.diff = data[feature.properties?.OEVK] ?? 0;
         }
 
+        console.log(geojsonData);
+        
+
         // Remove previous OEVK layer if it exists
         if (map.getLayer(oevkLayerId + oevkLayerIncrement)) {
             map.removeLayer(oevkLayerId + oevkLayerIncrement);
         }
         oevkLayerIncrement++;
 
+        // Use a discrete (step) expression for the fill-color:
+        // - diff < -0.15: "15+ fidesz"
+        // - -0.15 <= diff < -0.05: "5+ fidesz"
+        // - -0.05 <= diff < 0.05: "tossup"
+        // - 0.05 <= diff < 0.15: "5+ tisza"
+        // - diff >= 0.15: "15+ tisza"
         map.addLayer(
             {
                 id: oevkLayerId + oevkLayerIncrement,
@@ -113,17 +149,31 @@
                 },
                 paint: {
                     "fill-color": [
-                        "interpolate",
-                        ["linear"],
+                        "step",
                         ["get", "diff"],
-                        -0.3,
                         partyData["fidesz"].color,
-                        0,
-                        "rgba(0,0,0,0)",
-                        0.3,
+                        -0.15,
+                        partyData["fidesz"].color,
+                        -0.05,
+                        "#ffffff",
+                        0.05,
+                        partyData["tisza"].color,
+                        0.15,
                         partyData["tisza"].color,
                     ],
-                    "fill-opacity": 0.55,
+                    "fill-opacity": [
+                        "step",
+                        ["get", "diff"],
+                        0.7,
+                        -0.15,
+                        0.2,
+                        -0.05,
+                        0,
+                        0.05,
+                        0.2,
+                        0.15,
+                        0.7,
+                    ]
                 },
             },
             firstSymbolId,
@@ -167,10 +217,9 @@
                     if (arrow) arrow.style.left = "50%";
                     if (label && text) {
                         label.style.left = "50%";
-                        text.innerHTML = "0%";
+                        text.innerHTML = "Szoros";
                         text.style.fill = "#333";
                     }
-
                 }
             });
         });
@@ -178,20 +227,36 @@
 </script>
 
 <article id="mapContainer">
-    <!-- Colorbar Legend -->
+    <!-- Discrete Colorbar Legend -->
     <div id="colorbar-container">
-        <!-- The gradient uses the colors from partyData -->
-        <div
-            id="colorbar"
-            style="background: linear-gradient(to right, {partyData['fidesz']
-                .color}, rgba(0,0,0,0), {partyData['tisza'].color});"
-        ></div>
+        <div id="colorbar">
+            <!-- Five segments, each representing one discrete category -->
+            <div
+                class="legend-segment"
+                style="background: {partyData.fidesz.color}CC;"
+                data-label="Fidesz +15%"
+            ></div>
+            <div
+                class="legend-segment"
+                style="background: {partyData.fidesz.color}33;"
+                data-label="Fidesz +5%"
+            ></div>
+            <div class="legend-segment" style="background: #0000;" data-label="Szoros"></div>
+            <div
+                class="legend-segment"
+                style="background: {partyData.tisza.color}33;"
+                data-label="Tisza +5%"
+            ></div>
+            <div
+                class="legend-segment"
+                style="background: {partyData.tisza.color}CC;"
+                data-label="Tisza +15%"
+            ></div>
+        </div>
         <div id="colorbar-arrow"></div>
         <div id="colorbar-label">
             <svg>
-                <text x="50%" y="50%">
-                    
-                </text>
+                <text x="50%" y="50%">Szoros</text>
             </svg>
         </div>
     </div>
@@ -202,7 +267,6 @@
     #mapContainer {
         position: relative;
     }
-
     #map {
         width: 100%;
         aspect-ratio: 3 / 2;
@@ -214,22 +278,25 @@
         left: 50%;
         transform: translateX(-50%);
         width: 300px;
-        height: 40px;
         z-index: 2;
         pointer-events: none; /* so the legend doesn't block map interactions */
         background-color: #fff;
-        height: fit-content;
+        padding: 4px;
+        border: 1px solid #ccc;
+        pointer-events: all;
     }
     #colorbar {
+        display: flex;
         width: 100%;
         height: 16px;
-        border: 1px solid #ccc;
-        position: relative;
     }
-    /* Arrow that will move along the colorbar */
+    .legend-segment {
+        flex: 1;
+    }
+    /* Arrow that moves along the colorbar */
     #colorbar-arrow {
         position: absolute;
-        top: 16px;
+        top: 20px;
         left: 50%;
         width: 0;
         height: 0;
@@ -238,22 +305,20 @@
         border-bottom: 10px solid #333;
         transform: translateX(-50%);
     }
-    /* Label showing the diff value */
+    /* Label showing the category */
     #colorbar-label {
         position: absolute;
-        top: 26px;
+        top: 32px;
         left: 50%;
-        width: 60px;
-        height: 36px;
-        translate: -50%;
-        //display: none;
-
+        width: 80px;
+        height: 24px;
+        transform: translateX(-50%);
+        text-align: center;
         svg {
             width: 100%;
             height: 100%;
-
             text {
-                font-size: 16px;
+                font-size: 14px;
                 fill: #333;
                 text-anchor: middle;
                 stroke: #fff;
