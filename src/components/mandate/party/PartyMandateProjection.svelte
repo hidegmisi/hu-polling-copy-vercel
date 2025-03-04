@@ -1,8 +1,8 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import * as d3 from "d3";
-    import type { Party } from "$lib/types";
-    import { partyData } from "../../stores/dataStore";
+    import type { Party, Simulation } from "$lib/types";
+    import { partyData } from "$stores/dataStore";
 
     export let party: Party;
     export let data: number[] = [];
@@ -65,9 +65,9 @@
 
         // 4) Create two y-scales:
         //    - Tisza (above center line) from 0..maxTisza => [height/2 .. margin.top]
-        //      (the domain’s 0 is mapped to height/2, max is mapped near the top)
+        //      (the domain's 0 is mapped to height/2, max is mapped near the top)
         //    - Fidesz (below center line) from 0..maxFidesz => [height/2 .. height - margin.bottom]
-        //      (the domain’s 0 is mapped to height/2, max is mapped near the bottom)
+        //      (the domain's 0 is mapped to height/2, max is mapped near the bottom)
         const yMidPoint = height / 2 + (height - margin.top - margin.bottom) / 3;
 
         const yScale = d3
@@ -291,9 +291,9 @@
 </article>
 
 <style lang="scss">
-    #mandate-visualization {
+    article {
         width: 100%;
-        
+
         svg {
             background-color: #f9f9f9;
             border: 2px solid #f5f5f5;

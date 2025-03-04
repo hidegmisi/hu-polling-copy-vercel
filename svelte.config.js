@@ -13,7 +13,11 @@ const config = {
 		// See https://svelte.dev/docs/kit/adapters for more information about adapters.
 		adapter: adapter({
 			runtime: 'nodejs18.x',
-		})
+		}),
+		alias: {
+			$stores: 'src/stores',
+			$components: 'src/components'
+		}
 	}
 };
 

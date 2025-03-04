@@ -1,7 +1,7 @@
 <script lang="ts">
     import ParliamentChart from "$lib/parliament-chart/ParliamentChart";
     import { onMount } from "svelte";
-    import { partyData } from "../stores/dataStore";
+    import { partyData } from "$stores/dataStore";
     import type { Party, Simulation } from "$lib/types";
 
     export let data = {} as Record<string, Simulation>;

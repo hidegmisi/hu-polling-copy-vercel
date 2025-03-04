@@ -1,6 +1,6 @@
 import * as d3 from "d3";
 import type { DayData, AxisParams, Party, PollData, Annotation } from "../types";
-import { partyData } from "../../stores/dataStore";
+import { partyData } from "$stores/dataStore";
 
 interface ChartContext {
     x: d3.ScaleTime<number, number>;
@@ -587,9 +587,6 @@ export class ChartRenderer {
 
         const [mouseX] = d3.pointer(event, event.currentTarget);
         const hoveredDate = x.invert(mouseX);
-
-        console.log("Pointer X:", mouseX);
-
 
         // Find the closest data point for each party
         const closestData = this.dailyData.map((day) => ({

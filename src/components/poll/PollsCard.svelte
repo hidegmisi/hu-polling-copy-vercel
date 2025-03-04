@@ -9,8 +9,10 @@
         PollsterGroup,
     } from "$lib/types";
     import { onMount } from "svelte";
-    import { pollsterGroups } from "../stores/dataStore";
+    import { pollsterGroups } from "$stores/dataStore";
     import PollsChart from "./PollsChart.svelte";
+    import BottomMenu from "$components/ui/bottomMenu/BottomMenu.svelte";
+    import BottomMenuItem from "$components/ui/bottomMenu/BottomMenuItem.svelte";
 
     export let data = {
         sure_voters: [] as PollData,
@@ -101,12 +103,12 @@
 
         on:updateWindowDays={(e) => windowDays = e.detail}
     />
-    <div class="bottomMenu">
-        <div class="item"><a href="/modszertan">Módszertan</a></div>
+    <BottomMenu>
+        <BottomMenuItem>Módszertan</BottomMenuItem>
         {#if chartId}
-        <div class="item"><a href="/megosztas/{chartId}">Megosztás</a></div>
+        <BottomMenuItem>Megosztás</BottomMenuItem>
         {/if}
-    </div>
+    </BottomMenu>
     {#if showSource}
     <div class="source">
         <p>
@@ -149,23 +151,6 @@
                 padding: 2px;
                 width: fit-content;
                 min-width: unset;
-            }
-        }
-
-        .bottomMenu {
-            display: flex;
-            gap: 6px;
-
-            .item {
-                font-size: 14px;
-                padding: 3px 6px;
-                border: 1px solid #eee;
-                border-radius: 2px;
-                cursor: pointer;
-
-                a {
-                    text-decoration: none;
-                }
             }
         }
     }

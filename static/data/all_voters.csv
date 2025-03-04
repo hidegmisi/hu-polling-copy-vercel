@@ -1,7 +1,8 @@
 date,pollster,unsure,fidesz,tisza,dk_mszp_p,mihazank,mkkp,momentum,url
+2025-02-26,Republikon,0.26,0.26,0.28,0.07,0.05,0.05,0.01,"https://republikon.hu/elemzesek,-kutatasok/250301-kkv.aspx"
 2025-01-29,Publicus,0.32,0.25,0.28,0.08,0.04,0.02,0.0,https://publicus.hu/blog/partok-tamogatottsaga-2025-januar/
 2025-01-29,Publicus,0.21,0.3,0.33,0.09,0.04,0.02,0.0,https://publicus.hu/blog/partok-tamogatottsaga-2025-januar/
-2025-01-22,Republikon,0.28,0.23,0.26,0.08,0.05,0.04,0.02,"https://republikon.hu/elemzesek,-kutatasok/250128_kvk_januar.aspx"
+2025-01-22,Republikon,0.28,0.23,0.26,0.07,0.05,0.04,0.02,"https://republikon.hu/elemzesek,-kutatasok/250128_kvk_januar.aspx"
 2025-01-10,IDEA,0.26,0.26,0.33,0.04,0.05,0.02,0.01,https://www.facebook.com/ideaintezet/posts/pfbid0eBrPocBJFH9hDVJsgbcnaESmKt8qaWPvSobYCRNe5bFmyXKnVvRdq8rPAuZLSHvql
 2024-12-17,Publicus,0.33,0.24,0.27,0.08,0.04,0.02,0.01,https://telex.hu/belfold/2024/12/28/partpreferencia-publicus-2024-december-tisza-fidesz
 2024-12-11,Nézőpont,0.21,0.38,0.25,0.03,0.04,0.04,0.01,https://nezopont.hu/hu/tevekenysegeink/kozvelemeny-kutatasok/61-szazalekos-fidesz-tobbseg
@@ -10,7 +11,7 @@ date,pollster,unsure,fidesz,tisza,dk_mszp_p,mihazank,mkkp,momentum,url
 2024-12-05,Republikon,0.24,0.25,0.27,0.08,0.06,0.04,0.03,"https://republikon.hu/elemzesek,-kutatasok/24-12-16_kvk_december.aspx"
 2024-11-30,ZRI,0.29,0.24,0.26,0.07,0.05,0.03,0.02,https://hvg.hu/itthon/20241205_Zavecz-tisza-fidesz-ebx
 2024-11-26,Medián,0.24,0.27,0.34,0.03,0.05,0.03,0.01,https://hvg.hu/360/20241128_Median-kozvelemenykutatas-november-Tisza-Magyar-Peter-Fidesz
-2024-11-22,Társadalomkutató,0.18,0.38,0.26,0.03,0.05,0.05,0.01,https://tarsadalomkutato.hu/egyertelmuen-a-fidesz-vezeti-a-partversenyt/
+2024-11-22,TK,0.18,0.38,0.26,0.03,0.05,0.05,0.01,https://tarsadalomkutato.hu/egyertelmuen-a-fidesz-vezeti-a-partversenyt/
 2024-11-19,Publicus,0.36,0.24,0.25,0.08,0.03,0.02,0.01,https://publicus.hu/blog/partok-tamogatottsaga-2024-november/
 2024-11-19,Publicus,0.26,0.27,0.28,0.11,0.04,0.02,0.01,https://publicus.hu/blog/partok-tamogatottsaga-2024-november/
 2024-11-19,Századvég,0.06,0.38,0.32,0.06,0.06,0.09,0.02,https://szazadveg.hu/cikkek/orzi-vezeto-szerepet-a-fidesz-kdnp/
@@ -147,8 +148,6 @@ date,pollster,unsure,fidesz,tisza,dk_mszp_p,mihazank,mkkp,momentum,url
 2022-03-11,Publicus,0.32,0.33,0.0,0.0,0.02,0.01,0.0,https://publicus.hu/blog/partok-tamogatottsaga-2022-marcius-eleje/
 2022-03-11,IDEA,0.23,0.38,0.0,0.17,0.03,0.03,0.05,http://www.ideaintezet.hu/hu/hirek-aktualis/79/az-ellenzek-es-a-fidesz-is-erosodott-az-orosz-agresszioval-kitort-haboru-ota------2022--marcius
 2022-03-11,IDEA,0.17,0.4,0.0,0.0,0.03,0.02,0.0,http://www.ideaintezet.hu/hu/hirek-aktualis/79/az-ellenzek-es-a-fidesz-is-erosodott-az-orosz-agresszioval-kitort-haboru-ota------2022--marcius
-2022-03-05,e-benchmark,0.26,0.43,0.0,0.12,0.03,0.02,0.04,https://demokrata.hu/magyarorszag/felmeres-orban-viktor-felfele-marki-zay-lefele-huzza-sajat-taborat-500316/
-2022-03-05,e-benchmark,0.22,0.42,0.0,0.0,0.0,0.0,0.0,https://demokrata.hu/magyarorszag/felmeres-orban-viktor-felfele-marki-zay-lefele-huzza-sajat-taborat-500316/
 2022-02-26,Medián,0.2,0.39,0.0,0.0,0.04,0.03,0.0,https://hvg.hu/360/20220302_Median_felmeres_kozvelemenykutatas
 2022-02-24,Republikon,0.16,0.4,0.0,0.0,0.03,0.02,0.0,"http://republikon.hu/elemzesek,-kutatasok/22-03-01-kvk-feb.aspx"
 2022-02-14,Publicus,0.3,0.32,0.0,0.0,0.02,0.01,0.0,https://publicus.hu/blog/partok-tamogatottsaga-2022-februar/
@@ -175,20 +174,14 @@ date,pollster,unsure,fidesz,tisza,dk_mszp_p,mihazank,mkkp,momentum,url
 2021-11-23,Republikon,0.26,0.31,0.0,0.19,0.02,0.03,0.06,"http://republikon.hu/elemzesek,-kutatasok/21-12-02-kvk-nov.aspx"
 2021-11-24,ZRI,0.21,0.37,0.0,0.2,0.02,0.02,0.05,http://www.zaveczresearch.hu
 2021-11-24,ZRI,0.17,0.39,0.0,0.0,0.0,0.0,0.0,https://telex.hu/belfold/2021/12/03/zavecz-szuken-de-vezet-az-ellenzek
-2021-11-12,e-benchmark,0.18,0.45,0.0,0.17,0.01,0.04,0.03,https://demokrata.hu/magyarorszag/jo-hirek-fideszeseknek-kiderult-kit-tekintenek-az-ellenzek-vezetojenek-452595/
-2021-11-12,e-benchmark,0.14,0.45,0.0,0.0,0.0,0.0,0.0,https://demokrata.hu/magyarorszag/jo-hirek-fideszeseknek-kiderult-kit-tekintenek-az-ellenzek-vezetojenek-452595/
 2021-11-12,ZRI,0.14,0.37,0.0,0.0,0.03,0.03,0.0,https://hvg.hu/itthon/20211117_zavecz_kutatas_fidesz_ellenzek_lmp
 2021-11-12,ZRI,0.14,0.37,0.0,0.24,0.04,0.04,0.05,https://hvg.hu/itthon/20211117_zavecz_kutatas_fidesz_ellenzek_lmp
 2021-11-05,IDEA,0.26,0.34,0.0,0.17,0.03,0.03,0.07,http://www.ideaintezet.hu/hu/hirek-aktualis/74/elmult-az-ellenzeki-elovalasztas-kozvetlen-hatasa------2021--november
 2021-11-05,IDEA,0.16,0.38,0.0,0.0,0.04,0.02,0.0,http://www.ideaintezet.hu/hu/hirek-aktualis/74/elmult-az-ellenzeki-elovalasztas-kozvetlen-hatasa------2021--november
 2021-10-29,Republikon,0.24,0.32,0.0,0.2,0.02,0.02,0.07,"http://republikon.hu/elemzesek,-kutatasok/21-11-08-kvk-okt.aspx"
-2021-10-28,Psyma,0.31,0.36,0.0,0.18,0.02,0.01,0.03,https://drive.google.com/drive/folders/1Jbo7yqzSj5oi3H7XhRcIm11uXQJtSOFY?usp=sharing
-2021-10-28,Psyma,0.29,0.36,0.0,0.0,0.0,0.0,0.0,https://drive.google.com/drive/folders/1Jbo7yqzSj5oi3H7XhRcIm11uXQJtSOFY?usp=sharing
 2021-10-21,Real-PR 93,0.1,0.46,0.0,0.0,0.0,0.0,0.0,https://www.facebook.com/realpr93/posts/207310118180181
 2021-10-19,ZRI,0.25,0.34,0.0,0.21,0.01,0.01,0.04,https://telex.hu/belfold/2021/10/27/zavecz-kozvelemeny-kutatas-oktober-ellenzeki-lista-4-szazalekpont-elony-fidesz
 2021-10-19,ZRI,0.23,0.35,0.0,0.0,0.0,0.0,0.0,https://telex.hu/belfold/2021/10/27/zavecz-kozvelemeny-kutatas-oktober-ellenzeki-lista-4-szazalekpont-elony-fidesz
-2021-10-16,e-benchmark,0.25,0.44,0.0,0.19,0.03,0.02,0.04,https://demokrata.hu/magyarorszag/jo-hirek-fideszeseknek-kiderult-kit-tekintenek-az-ellenzek-vezetojenek-452595/
-2021-10-16,e-benchmark,0.14,0.43,0.0,0.0,0.0,0.0,0.0,https://demokrata.hu/magyarorszag/jo-hirek-fideszeseknek-kiderult-kit-tekintenek-az-ellenzek-vezetojenek-452595/
 2021-10-11,Századvég,0.07,0.45,0.0,0.0,0.03,0.05,0.0,https://szazadveg.hu/hu/2021/10/15/a-valasztok-kozel-ketharmada-a-fidesz-kdnp-gyozelmere-szamit-2022-ben~n2073
 2021-10-09,IDEA,0.27,0.33,0.0,0.19,0.03,0.02,0.06,http://ideaintezet.hu/hu/hirek-aktualis/73/az-elovalasztas-masodik-forduloja-elott-nyiltta-valt-a-verseny-az-ellenzek-es-a-fidesz-kozott-
 2021-10-09,IDEA,0.16,0.38,0.0,0.0,0.03,0.02,0.0,http://ideaintezet.hu/hu/hirek-aktualis/73/az-elovalasztas-masodik-forduloja-elott-nyiltta-valt-a-verseny-az-ellenzek-es-a-fidesz-kozott-
@@ -203,8 +196,6 @@ date,pollster,unsure,fidesz,tisza,dk_mszp_p,mihazank,mkkp,momentum,url
 2021-09-07,IDEA,0.17,0.38,0.0,0.0,0.03,0.02,0.0,http://www.ideaintezet.hu/hu/hirek-aktualis/71/beindulo-kampany--koncentralodo-szavazok-----2021--szeptember
 2021-08-26,Republikon,0.24,0.34,0.0,0.19,0.01,0.01,0.06,"http://republikon.hu/elemzesek,-kutatasok/21-09-01-kvk.aspx"
 2021-08-25,Nézőpont,0.11,0.45,0.0,0.0,0.0,0.0,0.0,https://nezopont.hu/a-fidesz-nyerte-meg-az-augusztust/
-2021-08-19,Civitas,0.23,0.4,0.0,0.15,0.03,0.03,0.06,https://designrr.page/?id=119445&token=1015409182&type=FP&h=8556
-2021-08-19,Civitas,0.17,0.42,0.0,0.0,0.0,0.0,0.0,https://designrr.page/?id=119445&token=1015409182&type=FP&h=8556
 2021-08-19,ZRI,0.25,0.35,0.0,0.19,0.01,0.01,0.05,https://hvg.hu/itthon/20210826_Zavecz_ellenzek_fidesz_felmeres
 2021-08-19,ZRI,0.22,0.37,0.0,0.0,0.0,0.0,0.0,https://hvg.hu/itthon/20210826_Zavecz_ellenzek_fidesz_felmeres
 2021-08-01,IDEA,0.28,0.33,0.0,0.11,0.03,0.03,0.06,http://www.ideaintezet.hu/hu/hirek-aktualis/69/megallt-a-jobbik-eloretorese-a-nyar-derekan------2021--julius
@@ -213,7 +204,6 @@ date,pollster,unsure,fidesz,tisza,dk_mszp_p,mihazank,mkkp,momentum,url
 2021-07-22,Republikon,0.26,0.35,0.0,0.12,0.01,0.01,0.06,http://republikon.hu/3509.aspx
 2021-07-04,IDEA,0.3,0.32,0.0,0.1,0.03,0.03,0.05,http://www.ideaintezet.hu/hu/hirek-aktualis/65/listak-versenyeben-a-biztos-szavazoknal-forditott-a-fidesz
 2021-07-04,IDEA,0.19,0.36,0.0,0.0,0.04,0.03,0.0,http://www.ideaintezet.hu/hu/hirek-aktualis/65/listak-versenyeben-a-biztos-szavazoknal-forditott-a-fidesz
-2021-07-03,Psyma,0.34,0.34,0.0,0.1,0.01,0.01,0.03,https://drive.google.com/drive/folders/1EepDl8JA7kehmh3ecgIXRdi7Vgnef5z-?usp=sharing
 2021-06-28,Republikon,0.31,0.33,0.0,0.09,0.01,0.01,0.07,"http://republikon.hu/elemzesek,-kutatasok/21-07-02-kvk.aspx"
 2021-06-16,ZRI,0.25,0.34,0.0,0.12,0.01,0.01,0.06,https://hvg.hu/itthon/20210624_Zavecz_junius_partpreferencia
 2021-06-16,ZRI,0.21,0.37,0.0,0.0,0.0,0.0,0.0,https://hvg.hu/itthon/20210624_Zavecz_junius_partpreferencia
@@ -228,8 +218,6 @@ date,pollster,unsure,fidesz,tisza,dk_mszp_p,mihazank,mkkp,momentum,url
 2021-05-21,Publicus,0.2,0.34,0.0,0.1,0.01,0.01,0.07,https://publicus.hu/blog/partok-tamogatottsaga-es-az-elovalasztas-2021-majus/
 2021-05-17,ZRI,0.23,0.34,0.0,0.11,0.01,0.01,0.06,https://telex.hu/belfold/2021/05/21/zavecz-felmeres-partok-tamogatottsaga-fidesz-ellenzeki-partok
 2021-05-17,ZRI,0.18,0.38,0.0,0.0,0.0,0.0,0.0,https://telex.hu/belfold/2021/05/21/zavecz-felmeres-partok-tamogatottsaga-fidesz-ellenzeki-partok
-2021-05-11,Civitas,0.23,0.4,0.0,0.09,0.03,0.02,0.05,https://designrr.page/?id=92245&token=2630185484&type=FP
-2021-05-11,Civitas,0.21,0.41,0.0,0.0,0.0,0.0,0.0,https://designrr.page/?id=92245&token=2630185484&type=FP
 2021-05-04,IDEA,0.31,0.31,0.0,0.1,0.02,0.02,0.06,http://ideaintezet.hu/hu/hirek-aktualis/58/rendkivul-kielezett-verseny-a-politikai-tombok-kozott-2021--majus-elejen-
 2021-05-04,IDEA,0.21,0.35,0.0,0.0,0.03,0.02,0.0,http://ideaintezet.hu/hu/hirek-aktualis/58/rendkivul-kielezett-verseny-a-politikai-tombok-kozott-2021--majus-elejen-
 2021-04-28,Nézőpont,0.22,0.4,0.0,0.0,0.02,0.02,0.0,https://nezopont.hu/nott-a-fidesz-elonye/
@@ -245,7 +233,6 @@ date,pollster,unsure,fidesz,tisza,dk_mszp_p,mihazank,mkkp,momentum,url
 2021-03-25,Publicus,0.31,0.3,0.0,0.09,0.0,0.0,0.06,https://publicus.hu/blog/partok-tamogatottsaga-es-az-elovalasztas-2021-majus/
 2021-03-25,Republikon,0.34,0.29,0.0,0.09,0.01,0.01,0.09,http://republikon.hu/media/94017/21-04-01-kvk-republikon-prezentacio.pdf
 2021-03-09,Nézőpont,0.22,0.38,0.0,0.0,0.02,0.02,0.0,https://nezopont.hu/fidesz-elony-az-aktivak-koreben-de-novekvo-bizonytalan-tabor/
-2021-03-11,Civitas,0.29,0.38,0.0,0.06,0.02,0.02,0.06,https://designrr.page/?id=71673&token=2044092031&type=FP
 2021-03-11,ZRI,0.27,0.33,0.0,0.11,0.02,0.01,0.06,http://www.zaveczresearch.hu/bovult-a-fidesz-es-a-jobbik-tabora-kielezett-maradt-a-verseny-a-kormanypartok-es-a-hatparti-ellenzek-kozott/
 2021-03-11,ZRI,0.24,0.36,0.0,0.0,0.02,0.01,0.0,http://www.zaveczresearch.hu/bovult-a-fidesz-es-a-jobbik-tabora-kielezett-maradt-a-verseny-a-kormanypartok-es-a-hatparti-ellenzek-kozott/
 2021-02-25,IDEA,0.29,0.31,0.0,0.12,0.02,0.02,0.07,http://ideaintezet.hu/hu/hirek-aktualis/53/stabil-az-ellenzeki-egyesitett-lista-elonye------2021--februar
@@ -483,3 +470,4 @@ date,pollster,unsure,fidesz,tisza,dk_mszp_p,mihazank,mkkp,momentum,url
 2018-01-21,Nézőpont,0.36,0.4,0.0,0.04,0.0,0.01,0.02,http://nezopontintezet.hu/analysis/2018_januar_partpreferencia_nezopont/
 2018-01-15,ZRI,0.35,0.34,0.0,0.05,0.0,0.0,0.02,http://www.zaveczresearch.hu/alacsony-aktivitas-valtozatlan-eroviszonyok/
 2018-01-09,Iránytű,0.29,0.33,0.0,0.05,0.0,0.01,0.03,https://mno.hu/belfold/iranytu-intezet-gyengult-a-fidesz-de-magasan-vezet-2443709
+2025-01-22,Republikon,0.28,0.23,0.26,0.08,0.05,0.04,0.02,"https://republikon.hu/elemzesek,-kutatasok/250128_kvk_januar.aspx"

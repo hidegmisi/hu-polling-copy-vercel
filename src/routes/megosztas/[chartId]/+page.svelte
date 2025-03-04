@@ -5,9 +5,9 @@
     import {
         pollData,
         fetchData,
-    } from "../../../stores/dataStore";
+    } from "$stores/dataStore";
     import type { PollData } from "$lib/types";
-    import PollsCardFromData from "../../../components/PollsCardFromData.svelte";
+    import PollsCardFromData from "$components/poll/PollsCardFromData.svelte";
     import html2canvas from "html2canvas";
 
     const chartId = page.params.chartId;

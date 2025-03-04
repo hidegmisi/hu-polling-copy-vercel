@@ -1,6 +1,6 @@
 <script lang="ts">
     import type { Party } from "$lib/types";
-    import { partyData } from "../../stores/dataStore";
+    import { partyData } from "$stores/dataStore";
 
     export let data = {} as Record<Party, number>;
 </script>

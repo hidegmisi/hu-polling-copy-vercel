@@ -1,25 +1,25 @@
 <script lang="ts">
-    import type { Party, PollData, Simulation } from "$lib/types";
+    import type { PollData, Simulation } from "$lib/types";
     import { onMount } from "svelte";
     import {
         pollData,
         simulationData,
         fetchData,
-        pollsterGroups,
-        partyData,
-    } from "../stores/dataStore";
-    import RecentPollsAside from "../components/RecentPollsAside.svelte";
-    import MiniMandateProjection from "../components/mandateProjection/MiniMandateProjection.svelte";
-    import PollsCardFromData from "../components/PollsCardFromData.svelte";
-    import ParliamentChart from "../components/ParliamentChart.svelte";
-    import PartyMandateTable from "../components/mandateProjection/PartyMandateTable.svelte";
-    import OevkMap from "../components/OEVKMap.svelte";
-    import SectionCard from "../components/section/SectionCard.svelte";
-    import SectionTitle from "../components/section/SectionTitle.svelte";
-    import GridItem from "../components/grid/GridItem.svelte";
-    import GridSectionTitle from "../components/grid/GridSectionTitle.svelte";
-    import SimulationNameSpan from "../components/mandateProjection/SimulationNameSpan.svelte";
-    import ExplainerCard from "../components/section/ExplainerCard.svelte";
+    } from "$stores/dataStore";
+    import RecentPollsAside from "$components/poll/RecentPollsAside.svelte";
+    import MiniMandateProjection from "$components/mandate/MiniMandateProjection.svelte";
+    import PollsCardFromData from "$components/poll/PollsCardFromData.svelte";
+    import ParliamentChart from "$components/mandate/parliament/ParliamentChart.svelte";
+    import PartyMandateTable from "$components/mandate/party/PartyMandateTable.svelte";
+    import OevkMap from "$components/mandate/map/OEVKMap.svelte";
+    import SectionCard from "$components/section/SectionCard.svelte";
+    import SectionTitle from "$components/section/SectionTitle.svelte";
+    import GridItem from "$components/grid/GridItem.svelte";
+    import GridSectionTitle from "$components/grid/GridSectionTitle.svelte";
+    import SimulationNameSpan from "$components/mandate/SimulationNameSpan.svelte";
+    import ExplainerCard from "$components/section/ExplainerCard.svelte";
+    import BottomMenu from "$components/ui/bottomMenu/BottomMenu.svelte";
+    import BottomMenuItem from "$components/ui/bottomMenu/BottomMenuItem.svelte";
 
     let data = {
         sure_voters: [] as PollData,
@@ -53,10 +53,9 @@
                 >mandátumbecslés</a
             > oldalon.
         </p>
-        <div class="bottomMenu">
-            <div class="item">Módszertan</div>
-            <div class="item">Megosztás</div>
-        </div>
+        <BottomMenu>
+            <BottomMenuItem>Módszertan</BottomMenuItem>
+        </BottomMenu>
     </aside>
 </GridItem>
 <GridItem variant="main">
@@ -195,23 +194,6 @@
             width: 100%;
             margin: 0 auto;
             padding: 1rem 0;
-        }
-        .bottomMenu {
-            margin-top: 1rem;
-            display: flex;
-            gap: 6px;
-
-            .item {
-                font-size: 14px;
-                padding: 3px 6px;
-                border: 1px solid #eee;
-                border-radius: 2px;
-                cursor: pointer;
-
-                a {
-                    text-decoration: none;
-                }
-            }
         }
     }
 

@@ -1,7 +1,7 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import mapboxgl, { type LngLatBoundsLike } from "mapbox-gl";
-    import { partyData } from "../stores/dataStore";
+    import { partyData } from "$stores/dataStore";
     import type { Simulation } from "$lib/types";
 
     export let data = {} as Simulation["oevkDiffs"];
@@ -14,10 +14,10 @@
 
     const MAPBOX_ACCESS_TOKEN =
         "pk.eyJ1IjoiaGlkZWdtaXNpIiwiYSI6ImNrNmx5YzlwODBpbjEzbnA3d216cTRjcXAifQ.0Fvgxohx9xZmb-14mcC71g";
-    const hungaryBounds = [
+    const hungaryBounds: [[number, number], [number, number]] = [
         [15.113, 45.737 - 0.1],
         [23.896, 48.585 + 0.3],
-    ] as LngLatBoundsLike;
+    ];
 
     const colors = [
         partyData["fidesz"].color,
@@ -222,7 +222,7 @@
                     if (arrow) arrow.style.left = "50%";
                     if (label && text) {
                         label.style.left = "50%";
-                        text.innerHTML = "Ki vezet?";
+                        text.innerHTML = "Ki esélyes?";
                         text.style.fill = "#333";
                     }
                 }
@@ -249,7 +249,7 @@
             <div
                 class="legend-segment"
                 style="background: {colors[2]}; opacity: 0.6"
-                data-label="Ki vezet?"
+                data-label="Ki esélyes?"
             ></div>
             <div
                 class="legend-segment"
@@ -265,7 +265,7 @@
         <div id="colorbar-arrow"></div>
         <div id="colorbar-label">
             <svg>
-                <text x="50%" y="50%">Ki vezet?</text>
+                <text x="50%" y="50%">Ki esélyes?</text>
             </svg>
         </div>
     </div>

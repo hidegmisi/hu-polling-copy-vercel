@@ -1,6 +1,6 @@
 <script lang="ts">
     import type { Poll } from "$lib/types";
-    import { pollsterData } from "../stores/dataStore";
+    import { pollsterData } from "$stores/dataStore";
     
     export let poll: Poll;
 

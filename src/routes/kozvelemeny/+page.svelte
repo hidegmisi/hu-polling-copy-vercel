@@ -1,14 +1,14 @@
 <script lang="ts">
     import type { PollData } from "$lib/types";
     import { onMount } from "svelte";
-    import { pollData, fetchData } from "../../stores/dataStore";
-    import InteractivePollsCard from "../../components/InteractivePollsCard.svelte";
-    import RecentPollsAside from "../../components/RecentPollsAside.svelte";
-    import PollsCardFromData from "../../components/PollsCardFromData.svelte";
-    import GridItem from "../../components/grid/GridItem.svelte";
-    import GridSectionTitle from "../../components/grid/GridSectionTitle.svelte";
-    import SectionCard from "../../components/section/SectionCard.svelte";
-    import SectionTitle from "../../components/section/SectionTitle.svelte";
+    import { pollData, fetchData } from "$stores/dataStore";
+    import InteractivePollsCard from "$components/poll/InteractivePollsCard.svelte";
+    import RecentPollsAside from "$components/poll/RecentPollsAside.svelte";
+    import PollsCardFromData from "$components/poll/PollsCardFromData.svelte";
+    import GridItem from "$components/grid/GridItem.svelte";
+    import GridSectionTitle from "$components/grid/GridSectionTitle.svelte";
+    import SectionCard from "$components/section/SectionCard.svelte";
+    import SectionTitle from "$components/section/SectionTitle.svelte";
 
     let data: Record<"sure_voters" | "all_voters", PollData> = {
         sure_voters: [],

@@ -1,6 +1,6 @@
 import * as d3 from "d3";
 import type { PollData, DateRange, Party, AxisParams, DayData, PollsterGroup, PollsterData } from "../types";
-import { pollsterData } from "../../stores/dataStore";
+import { pollsterData } from "$stores/dataStore";
 
 export class ChartDataProcessor {
     private pollData: PollData;

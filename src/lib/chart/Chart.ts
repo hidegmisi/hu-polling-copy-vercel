@@ -1,7 +1,7 @@
 import { ChartRenderer } from "./ChartRenderer";
 import { ChartDataProcessor } from "./ChartDataProcessor";
 import type { Annotation, AxisParams, DateRange, DayData, Party, PollData, PollsterGroup } from "../types";
-import { partyData } from "../../stores/dataStore";
+import { partyData } from "$stores/dataStore";
 
 export class Chart {
     private containerElement: HTMLElement;

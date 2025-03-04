@@ -1,4 +1,6 @@
 <script lang="ts">
+    import BottomMenu from "$components/ui/bottomMenu/BottomMenu.svelte";
+    import BottomMenuItem from "$components/ui/bottomMenu/BottomMenuItem.svelte";
     import type { Simulation } from "$lib/types";
     import { createEventDispatcher, onMount } from "svelte";
 
@@ -34,9 +36,9 @@
             </button>
         {/each}
     </div>
-    <div class="bottomMenu">
-        <div class="item">Módszertan</div>
-    </div>
+    <BottomMenu>
+       <BottomMenuItem>Módszertan</BottomMenuItem>
+    </BottomMenu>
 </aside>
 
 <style lang="scss">
@@ -92,24 +94,6 @@
 
                 p {
                     margin-top: 3px;
-                }
-            }
-        }
-
-        .bottomMenu {
-            margin-top: 1rem;
-            display: flex;
-            gap: 6px;
-
-            .item {
-                font-size: 14px;
-                padding: 3px 6px;
-                border: 1px solid #eee;
-                border-radius: 2px;
-                cursor: pointer;
-
-                a {
-                    text-decoration: none;
                 }
             }
         }
