@@ -68,11 +68,32 @@
 </GridItem>
 
 <GridItem variant="left-half" --grid-row="span 2">
-    <SectionCard id="parliament-chart">
-        <SectionTitle>A legvalószínűbb parlament</SectionTitle>
+    <SectionCard>
+        <SectionTitle>Rövid magyarázat</SectionTitle>
         <p>
-            Az alábbi ábrán a <span class="simulation">{data.simulationData["main"]?.metadata.name}</span>
-            országos átlaga és az EP-választás választási földrajza alapján szimulált országgyűlési
+            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nesciunt voluptate expedita similique, eaque magni mollitia dicta aperiam pariatur et accusamus iste quidem eius delectus vitae modi fuga error voluptas nisi. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Rem sunt, eos, eveniet necessitatibus aut doloremque perspiciatis totam adipisci repellat explicabo iusto, consequuntur ullam pariatur officiis nihil minima id natus enim!
+        </p>
+        <ExplainerCard image="/images/hungary-shape.webp" alt="Választási földrajz">
+            A szimuláció azt feltételezi, hogy az EP-választás óta nem változott a választási
+            földrajz, de az ellenzéki szavazók nagyobb része szavaz majd a Tiszára.
+            <a href="#">Módszertan</a>
+        </ExplainerCard>
+        <p>
+            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nesciunt voluptate expedita similique, eaque magni mollitia dicta aperiam pariatur et accusamus iste quidem eius delectus vitae modi fuga error voluptas nisi. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Rem sunt, eos, eveniet necessitatibus aut doloremque perspiciatis totam adipisci repellat explicabo iusto, consequuntur ullam pariatur officiis nihil minima id natus enim!
+        </p>
+        <p>
+            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nesciunt voluptate expedita similique, eaque magni mollitia dicta aperiam pariatur et accusamus iste quidem eius delectus vitae modi fuga error voluptas nisi. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Rem sunt, eos, eveniet necessitatibus aut doloremque perspiciatis totam adipisci repellat explicabo iusto, consequuntur ullam pariatur officiis nihil minima id natus enim!
+        </p>
+
+        <p>Több szimuláció és ábra, részletesebb adatok, valamint módszertan a <a href="/mandatumbecsles">mandátumbecslés</a> oldalon.</p>
+    </SectionCard>
+</GridItem>
+<GridItem variant="right-half">
+    <SectionCard id="parliament-chart">
+        <SectionTitle variant="medium">A legvalószínűbb parlament</SectionTitle>
+        <p>
+            Az alábbi ábrán a <SimulationNameSpan>{data.simulationData["main"]?.metadata.name}</SimulationNameSpan>
+            szimuláció országos átlaga és az EP-választás választási földrajza alapján szimulált országgyűlési
             választás eredménye látható.
         </p>
         <ParliamentChart data={data.simulationData} />
@@ -81,23 +102,13 @@
 </GridItem>
 <GridItem variant="right-half">
     <SectionCard>
-        <SectionTitle>Egyéni választókerületek térképe</SectionTitle>
+        <SectionTitle variant="medium">Egyéni választókerületek térképe</SectionTitle>
         <p>
             Az alábbi térképen a 106 egyéni választókerület látható, és a 
             <SimulationNameSpan>{data.simulationData["main"]?.metadata.name}</SimulationNameSpan>
-            által becsült várható különbség a két esélyes párt között.
+            szimuláció által becsült várható különbség a két esélyes párt között.
         </p>
         <OevkMap data={data.simulationData["main"]?.oevkDiffs} />
-    </SectionCard>
-</GridItem>
-<GridItem variant="right-half">
-    <ExplainerCard image="/images/hungary-shape.webp" alt="Választási földrajz" --margin="0 0 1rem 0">
-        A szimuláció azt feltételezi, hogy az EP-választás óta nem változott a választási
-        földrajz, de az ellenzéki szavazók nagyobb része szavaz majd a Tiszára.
-        <a href="#">Módszertan</a>
-    </ExplainerCard>
-    <SectionCard>
-        <p>Több szimuláció és ábra, részletesebb adatok, valamint módszertan a <a href="/mandatumbecsles">mandátumbecslés</a> oldalon.</p>
     </SectionCard>
 </GridItem>
 
@@ -116,11 +127,20 @@
 </GridItem>
 <GridItem variant="aside">
     <SectionCard>
-        <h2>Linkek</h2>
+        <SectionTitle variant="small">Linkek</SectionTitle>
         <ul>
-            <li><a href="https://kozvelemeny.org">- Közvélemény.org</a></li>
-            <li><a href="https://voxpopuli.444.hu">- Vox Populi a 444-en</a></li>
-            <li><a href="https://www.facebook.com/valasztasi.kalauz">- Választási Kalauz Facebook</a></li>
+            <li>
+                <a href="https://www.facebook.com/valasztasi.kalauz">Választási Kalauz Facebook</a><br>
+                A legfrissebb rövidebb posztok a Facebookon.
+            </li>
+            <li>
+                <a href="https://kozvelemeny.org">Közvélemény.org</a><br>
+                Hosszabb elemzések a weboldalukon.
+            </li>
+            <li>
+                <a href="https://voxpopuli.444.hu">Vox Populi a 444-en</a><br>
+                Válogatott posztok a 444-es blogunkon.
+            </li>
         </ul>
     </SectionCard>
 </GridItem>
@@ -140,12 +160,12 @@
             illetve a 2021. április 2-án indult <a href="https://voxpopuli.444.hu/">https://voxpopuli.444.hu/</a>
             oldalunkon talál egy-egy válogatást.
         </p>
-        <h3>Ki a szerkesztő?</h3>
+        <SectionTitle variant="small" hasTopMargin>Ki a szerző?</SectionTitle>
         <p>
             Munkaidőben a Közép-Európai Egyetem (CEU) kutatóprofesszora vagyok. Szakterületeim a választói magatartás, a kutatás-módszertan, és a választási rendszerek. 1990 óta foglalkozom ezekkel a témákkal, és azóta kb. 40 tudományos célú kérdőíves vizsgálatot vezettem Lengyelországban, Csehországban, Szlovákiában, Magyarországon és Romániában. Idézettségi adataimat <a href="https://scholar.google.com/citations?user=7mLMXH8AAAAJ&amp;hl=en&amp;oi=ao"> itt</a> találja meg. Első olyan cikkeim, amiben mások közvélemény-kutatásait értékeltem, 1998-ban jelentek meg a nyomtatott <a aria-label="Magyar Hirlapban (opens in a new tab)" href="https://web.archive.org/web/20071112095437/http://www.median.hu/object.7293a708-88dd-4f91-b192-d0853aa7f49a.ivy" target="_blank" rel="noreferrer noopener">Magyar Hirlapban</a> és <a aria-label="másutt (opens in a new tab)" href="http://www.personal.ceu.hu/departs/personal/Gabor_Toka/Papers/Toka99Polls.pdf" target="_blank" rel="noreferrer noopener">másutt</a>. Politikai aktivistaként a Közös Ország Mozgalom taktikai szavazást támogató közvélemény-kutatásain és hétpárti támogatottságú választási törvényjavaslatán, illetve választási megfigyelőként, szavazatszámlálóként, utcai és házról-házra kopogtató kampánymunkásként dolgoztam. Egy pártfüggetlen és szakmabeli ellenzéki aktivista perspektívájából írom tehát, ami itt megjelenik, és az olvasók figyelmén kívül semmit nem fogadok el érte.
         </p>
         <p>@ Tóka Gábor, 2019-</p>
-        <h3>Ki fejlesztette az oldalt?</h3>
+        <SectionTitle variant="small" hasTopMargin>Ki fejlesztette az oldalt?</SectionTitle>
         <p>
             Én.
         </p>
@@ -201,6 +221,7 @@
 
         li {
             margin-bottom: 6px;
+            font-size: 1rem;
 
             a {
                 color: #3396ff;
@@ -215,12 +236,11 @@
 
     h3 {
         margin-top: 16px;
-        font-size: 20px;
+        font-size: 22px;
         font-weight: 400;
     }
 
     p {
-        font-size: 16px;
         margin-top: 12px;
     }
 </style>

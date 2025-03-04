@@ -148,10 +148,10 @@
 
             h3 {
                 font-size: 1rem;
-                font-weight: normal;
+                font-weight: 400;
             }
             .standing {
-                font-size: 0.75rem;
+                font-size: 14px;
                 text-align: center;
 
                 span {

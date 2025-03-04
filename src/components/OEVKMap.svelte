@@ -19,40 +19,36 @@
         [23.896, 48.585 + 0.3],
     ] as LngLatBoundsLike;
 
+    const colors = [
+        partyData["fidesz"].color,
+        "#ffb985",
+        "#f1f1f1",
+        "#908dc7",
+        partyData["tisza"].color,
+    ];
+
     // Updates the arrow on the legend based on diff value,
     // snapping to the center of the corresponding discrete category.
     function updateLegendArrow(diff: any) {
         const diffValue = parseFloat(diff);
         let position: number;
         let category: string;
-        let textColor: string;
-        let opacity: number;
 
         if (diffValue < -0.15) {
             position = 10;
             category = "Fidesz +15%";
-            textColor = partyData["fidesz"].color;
-            opacity = 1;
         } else if (diffValue < -0.05) {
             position = 30;
             category = "Fidesz +5%";
-            textColor = partyData["fidesz"].color;
-            opacity = 0.2;
         } else if (diffValue < 0.05) {
             position = 50;
             category = "Szoros";
-            textColor = "#fff";
-            opacity = 0.2;
         } else if (diffValue < 0.15) {
             position = 70;
             category = "Tisza +5%";
-            textColor = partyData["tisza"].color;
-            opacity = 0.2;
         } else {
             position = 90;
             category = "Tisza +15%";
-            textColor = partyData["tisza"].color;
-            opacity = 1;
         }
 
         const arrow = document.getElementById("colorbar-arrow");
@@ -67,7 +63,7 @@
             label.style.left = position + "%";
             label.style.display = "block";
             text.innerHTML = category;
-            text.style.fill = '#333';
+            text.style.fill = "#333";
         }
     }
 
@@ -99,23 +95,6 @@
         if (!geojsonData) {
             const response = await fetch("/geo/oevks.geojson");
             geojsonData = await response.json();
-
-            map.addLayer(
-                {
-                    id: "oevk-lines",
-                    type: "line",
-                    source: {
-                        type: "geojson",
-                        data: geojsonData,
-                    },
-                    paint: {
-                        "line-width": 2,
-                        "line-color": "#000",
-                        "line-opacity": 0.21,
-                    },
-                },
-                firstSymbolId,
-            );
         }
 
         // Add the diff property to each feature
@@ -124,7 +103,32 @@
             feature.properties.diff = data[feature.properties?.OEVK] ?? 0;
         }
 
-        console.log(geojsonData);
+        // Add the OEVK lines layer
+        map.addLayer(
+            {
+                id: "oevk-lines",
+                type: "line",
+                source: {
+                    type: "geojson",
+                    data: geojsonData,
+                },
+                paint: {
+                    "line-width": 0.5,
+                    "line-opacity": 0.2,
+                },
+            },
+            firstSymbolId,
+        );
+
+        // Set the line color based on the diff value
+        map.setPaintProperty("oevk-lines", "line-color", [
+            "case",
+            [">=", ["get", "diff"], 0.05],
+            partyData["tisza"].color,
+            ["<=", ["get", "diff"], -0.05],
+            partyData["fidesz"].color,
+            "#000",
+        ]);
         
 
         // Remove previous OEVK layer if it exists
@@ -151,29 +155,30 @@
                     "fill-color": [
                         "step",
                         ["get", "diff"],
-                        partyData["fidesz"].color,
+                        colors[0],
                         -0.15,
-                        partyData["fidesz"].color,
+                        colors[1],
                         -0.05,
-                        "#ffffff",
+                        colors[2],
                         0.05,
-                        partyData["tisza"].color,
+                        colors[3],
                         0.15,
-                        partyData["tisza"].color,
+                        colors[4],
                     ],
-                    "fill-opacity": [
+                    /* "fill-opacity": [
                         "step",
                         ["get", "diff"],
-                        0.7,
+                        0.3,
                         -0.15,
-                        0.2,
+                        0.1,
                         -0.05,
                         0,
                         0.05,
-                        0.2,
+                        0.1,
                         0.15,
-                        0.7,
-                    ]
+                        0.3,
+                    ] */
+                    "fill-opacity": 0.6,
                 },
             },
             firstSymbolId,
@@ -186,7 +191,7 @@
 
         map = new mapboxgl.Map({
             container: "map",
-            style: "mapbox://styles/hidegmisi/cm7r3f0tk007j01sd6g6hbjr1",
+            style: "mapbox://styles/hidegmisi/cm7tlvdsq00bz01sc7hred6j6",
             center: [
                 (hungaryBounds[0][0] + hungaryBounds[1][0]) / 2,
                 (hungaryBounds[0][1] + hungaryBounds[1][1]) / 2,
@@ -217,7 +222,7 @@
                     if (arrow) arrow.style.left = "50%";
                     if (label && text) {
                         label.style.left = "50%";
-                        text.innerHTML = "Szoros";
+                        text.innerHTML = "Ki vezet?";
                         text.style.fill = "#333";
                     }
                 }
@@ -233,30 +238,34 @@
             <!-- Five segments, each representing one discrete category -->
             <div
                 class="legend-segment"
-                style="background: {partyData.fidesz.color}CC;"
+                style="background: {colors[0]}; opacity: 0.6;"
                 data-label="Fidesz +15%"
             ></div>
             <div
                 class="legend-segment"
-                style="background: {partyData.fidesz.color}33;"
+                style="background: {colors[1]}; opacity: 0.6;"
                 data-label="Fidesz +5%"
             ></div>
-            <div class="legend-segment" style="background: #0000;" data-label="Szoros"></div>
             <div
                 class="legend-segment"
-                style="background: {partyData.tisza.color}33;"
+                style="background: {colors[2]}; opacity: 0.6"
+                data-label="Ki vezet?"
+            ></div>
+            <div
+                class="legend-segment"
+                style="background: {colors[3]}; opacity: 0.6;"
                 data-label="Tisza +5%"
             ></div>
             <div
                 class="legend-segment"
-                style="background: {partyData.tisza.color}CC;"
+                style="background: {colors[4]}; opacity: 0.6;"
                 data-label="Tisza +15%"
             ></div>
         </div>
         <div id="colorbar-arrow"></div>
         <div id="colorbar-label">
             <svg>
-                <text x="50%" y="50%">Szoros</text>
+                <text x="50%" y="50%">Ki vezet?</text>
             </svg>
         </div>
     </div>
@@ -282,8 +291,8 @@
         z-index: 2;
         pointer-events: none; /* so the legend doesn't block map interactions */
         background-color: #fff;
-        padding: 4px;
-        border: 1px solid #ccc;
+        /* border: 1px solid #eee; */
+        outline: 2px solid #fff;
         pointer-events: all;
     }
     #colorbar {
@@ -315,15 +324,19 @@
         height: 24px;
         transform: translateX(-50%);
         text-align: center;
+        overflow: visible;
+
         svg {
             width: 100%;
             height: 100%;
+            overflow: visible;
+
             text {
                 font-size: 14px;
                 fill: #333;
                 text-anchor: middle;
                 stroke: #fff;
-                stroke-width: 3;
+                stroke-width: 4;
                 paint-order: stroke;
             }
         }

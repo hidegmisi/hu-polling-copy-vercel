@@ -33,7 +33,7 @@ header img {
     z-index: -1;
 }
 header h1 {
-    font-size: 2rem;
+    font-size: 32px;
     background-color: #fff;
     color: #333;
     padding: 0 12px;

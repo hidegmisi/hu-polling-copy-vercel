@@ -311,13 +311,13 @@
         padding: 0 8px;
         
         h2#leaderText {
-            font-size: 0.9rem;
+            font-size: 14px;
             font-weight: 600;
             padding: 2px 3px;
             padding-bottom: 0;
         }
         .standing {
-            font-size: 0.75rem;
+            font-size: 12px;
             text-align: center;
 
             span {

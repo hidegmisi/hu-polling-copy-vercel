@@ -75,7 +75,7 @@
         justify-content: space-between;
         
         .date, .pollster {
-            font-size: 13px;
+            font-size: 14px;
         }
 
         .date {

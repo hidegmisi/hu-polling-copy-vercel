@@ -38,7 +38,7 @@
         text-align: center;
         margin-top: 12px;
         font-weight: 400;
-        font-size: 18px;
+        font-size: 20px;
     }
 
     p {

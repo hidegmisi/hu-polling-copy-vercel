@@ -550,6 +550,9 @@ export class ChartRenderer {
             .on("pointerup pointercancel", (event) => {
                 event.target.releasePointerCapture(event.pointerId);
                 this.updateTooltips(this.dailyData[this.dailyData.length - 1]);
+            })
+            .on("mouseleave", () => {
+                this.updateTooltips(this.dailyData[this.dailyData.length - 1]);
             });
 
         this.mouseEventRect.node()?.addEventListener("touchmove", (event) => event.preventDefault());
