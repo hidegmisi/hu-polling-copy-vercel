@@ -1,277 +1,122 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import * as d3 from "d3";
     import type { Simulation } from "$lib/types";
+    import { MiniMandateChart } from "$lib/chart/MiniMandateChart";
+    import { DeviceType, getLayoutConfiguration } from "$lib/chart/MiniMandateChartTypes";
 
-    export let data: Record<string, Simulation>;
+    export let data: Record<string, Simulation> = {};
 
-    let width = 250;
-    let height = 180;
-    
-    let margin = { top: 20, right: 70, bottom: 50, left: 70 };
-    
-    width = 250;
-    height = 330;
-    
-    let svg; // We'll bind <svg> to this variable.
-
+    let width = 0;
+    let height = 0;
+    let margin = { top: 20, right: 70, bottom: 20, left: 70 };
+    let container: HTMLElement;
+    let svg: SVGSVGElement;
+    let chart: MiniMandateChart | null = null;
     let simulationData = {} as Simulation;
+    let deviceType = DeviceType.Desktop;
+    let leaderText = '';
+    function updateDimensions() {
+        if (!container) return;
+        
+        const containerWidth = container.clientWidth;
+        const windowWidth = window.innerWidth;
+        const layoutConfig = getLayoutConfiguration(containerWidth, windowWidth);
+        
+        // Update dimensions and layout information
+        width = containerWidth;
+        height = width / layoutConfig.aspectRatio;
+        margin = layoutConfig.margin;
+        deviceType = layoutConfig.deviceType;
+        
+        // Update chart with new dimensions if it exists
+        if (chart) {
+            chart.update({ width, height, margin, deviceType });
+        }
+    }
 
     onMount(() => {
+        // Load simulation data
         const loadingInterval = setInterval(() => {
             if (data['main']) {
                 simulationData = data['main'];
                 clearInterval(loadingInterval);
             }
         }, 10);
+
+        // Initial update
+        if (container) {
+            updateDimensions();
+        }
+        
+        // Set up ResizeObserver for more efficient resize handling
+        if (typeof ResizeObserver !== 'undefined') {
+            const resizeObserver = new ResizeObserver(entries => {
+                if (entries.length > 0) {
+                    const { width: newWidth } = entries[0].contentRect;
+                    if (newWidth !== width && newWidth > 0) {
+                        updateDimensions();
+                    }
+                }
+            });
+            
+            if (container) {
+                resizeObserver.observe(container);
+            }
+            
+            return () => {
+                resizeObserver.disconnect();
+            };
+        } else {
+            // Fallback for browsers that don't support ResizeObserver
+            let resizeTimeout: ReturnType<typeof setTimeout>;
+            const resizeHandler = () => {
+                clearTimeout(resizeTimeout);
+                resizeTimeout = setTimeout(() => {
+                    updateDimensions();
+                }, 100);
+            };
+            
+            window.addEventListener('resize', resizeHandler);
+            
+            return () => {
+                window.removeEventListener('resize', resizeHandler);
+            };
+        }
     });
     
-    $: if (simulationData['fidesz']?.length && simulationData['tisza']?.length) {
-        createChart();
+    $: if (simulationData['fidesz']?.length && simulationData['tisza']?.length && svg && width > 0) {
+        if (!chart) {
+            chart = new MiniMandateChart(svg, { width, height, margin, deviceType });
+            chart.draw(simulationData);
+        } else {
+            // The data changed, redraw with current dimensions
+            chart.draw(simulationData);
+        }
+        leaderText = getLeaderText();
     }
 
-    function createChart() {
-        const selectedData = simulationData;
-        if (!selectedData['fidesz']?.length || !selectedData['tisza']?.length) {
-            return;
+    function getLeaderText() {
+        if (simulationData.medians.tisza > 133) {
+            return 'Tisza kétharmad';
+        } else if (simulationData.medians.tisza > 100) {
+            return 'Tisza többség';
+        } else if (simulationData.medians.fidesz > 133) {
+            return 'Fidesz kétharmad';
+        } else if (simulationData.medians.fidesz > 100) {
+            return 'Fidesz többség';
         }
-
-        const svgSelection = d3.select(svg);
-
-        // 1) Convert your data into two separate arrays of { x, y } objects:
-        //    - Fidesz is index 0 in each pair
-        //    - Tisza is index 1
-        const dataFidesz = selectedData['fidesz'].map((d, i) => ({ x: i, y: d as number | null }));
-        const dataTisza = selectedData['tisza'].map((d, i) => ({ x: i, y: d  as number | null}));
-
-        // set data to undefined if the value, and the values before and after are all 0
-        for (let i = 1; i < dataFidesz.length - 1; i++) {
-            if (dataFidesz[i].y === 0 && dataFidesz[i - 1].y === 0 && dataFidesz[i + 1].y === 0) {
-                dataFidesz[i].y = null;
-            }
-            if (dataTisza[i].y === 0 && dataTisza[i - 1].y === 0 && dataTisza[i + 1].y === 0) {
-                dataTisza[i].y = null;
-            }
-        }
-        
-        // 2) Create an x-scale from [0 .. data.length-1] → [margin.left .. width-margin.right]
-        const yScale = d3
-        .scaleLinear()
-        .domain([0, dataFidesz.length - 1])
-        .range([height - margin.bottom, margin.top]);
-
-        // 3) Determine max y-values so we can define separate y-scales for above/below
-        const maxFidesz = d3.max(dataFidesz, (d) => d.y) || 0;
-        const maxTisza = d3.max(dataTisza, (d) => d.y) || 0;
-        const maxUnified = Math.max(maxFidesz, maxTisza);
-
-        // 4) Create two y-scales:
-        //    - Tisza (above center line) from 0..maxTisza => [height/2 .. margin.top]
-        //      (the domain’s 0 is mapped to height/2, max is mapped near the top)
-        //    - Fidesz (below center line) from 0..maxFidesz => [height/2 .. height - margin.bottom]
-        //      (the domain’s 0 is mapped to height/2, max is mapped near the bottom)
-        const xScaleFidesz = d3
-        .scaleLinear()
-        .domain([0, maxUnified])
-        .range([width / 2, margin.left]);
-
-        const xScaleTisza = d3
-        .scaleLinear()
-        .domain([0, maxUnified])
-        .range([width / 2, width - margin.right]);
-
-        // 5) Line generators:
-        //    - Tisza (above the center line)
-        const lineTisza = d3
-        .line()
-        .defined(d => d.y !== null)
-        .y((d) => yScale(d.x))
-        .x((d) => xScaleTisza(d.y))
-        .curve(d3.curveBasis);
-
-        //    - Fidesz (below the center line)
-        const lineFidesz = d3
-        .line()
-        .defined(d => d.y !== null)
-        .y((d) => yScale(d.x))
-        .x((d) => xScaleFidesz(d.y))
-        .curve(d3.curveBasis);
-
-        // 6) Append the Tisza path
-        svgSelection
-        .append("path")
-        .datum(dataTisza)
-        .attr("fill", "#00359c33")
-        .attr("stroke", "#00359c")
-        .attr("stroke-width", 1)
-        .attr("d", lineTisza);
-
-        // 7) Append the Fidesz path
-        svgSelection
-        .append("path")
-        .datum(dataFidesz)
-        .attr("fill", "#fd810033")
-        .attr("stroke", "#fd8100")
-        .attr("stroke-width", 1)
-        .attr("d", lineFidesz);
-            
-        // 8) Draw the vertical axis for "median" values
-        
-        svgSelection
-            .append("line")
-            .attr("y1", yScale(selectedData.medians.fidesz))
-            .attr("x1", xScaleFidesz(0))
-            .attr("y2", yScale(selectedData.medians.fidesz))
-            .attr("x2", xScaleFidesz(maxUnified) - 10)
-            .attr("stroke", "#fd8100")
-            .attr("stroke-width", 3)
-
-        svgSelection
-            .append("text")
-            .attr("y", yScale(selectedData.medians.fidesz))
-            .attr("x", xScaleFidesz(maxUnified) - 15)
-            .attr("text-anchor", "end")
-            .attr("alignment-baseline", "middle")
-            .style("font-size", "20px")
-            .style("font-weight", 500)
-            .style("fill", "#fd8100")
-            .style("stroke", "#f9f9f9")
-            .style("stroke-width", 2)
-            .style("paint-order", "stroke")
-            .text(`${selectedData.medians.fidesz}`);
-        
-        svgSelection
-            .append("line")
-            .attr("y1", yScale(selectedData.medians.tisza))
-            .attr("x1", xScaleTisza(0))
-            .attr("y2", yScale(selectedData.medians.tisza))
-            .attr("x2", xScaleTisza(maxUnified) + 10)
-            .attr("stroke", "#00359c")
-            .attr("stroke-width", 3)
-
-        svgSelection
-            .append("text")
-            .attr("y", yScale(selectedData.medians.tisza))
-            .attr("x", xScaleTisza(maxUnified) + 15)
-            .attr("text-anchor", "start")
-            .attr("alignment-baseline", "middle")
-            .style("font-size", "20px")
-            .style("font-weight", 500)
-            .style("fill", "#00359c")
-            .style("stroke", "#f9f9f9")
-            .style("stroke-width", 2)
-            .style("paint-order", "stroke")
-            .text(`${selectedData.medians.tisza}`);
-
-        // 9) Draw the horizontal axis in the center (y = height/2)
-
-        /* svgSelection
-            .append("g")
-            .attr("class", "y-axis")
-            .call(yAxis)
-            .selectAll("text")
-            .style("stroke", "#f9f9f9")
-            .style("stroke-width", "3px")
-            .style("paint-order", "stroke")
-            .style("font-size", "12px")
-            .style("font-weight", 400); */
-
-        // 10) Draw a center line for clarity
-        svgSelection
-            .append("line")
-            .attr("x1", width / 2)
-            .attr("x2", width / 2)
-            .attr("y1", margin.top)
-            .attr("y2", height - margin.bottom)
-            .attr("stroke", "#333");
-
-        // 11) Draw markers for majority and absolute majority
-
-        svgSelection
-            .append("line")
-            .attr("x1", 0)
-            .attr("x2", width)
-            .attr("y1", yScale(100))
-            .attr("y2", yScale(100))
-            .attr("stroke", "#aaa")
-            .attr("stroke-width", 1)
-            .attr("stroke-dasharray", "2,2")
-            //send to back
-            .lower();
-
-        svgSelection
-            .append("text")
-            .attr("y", yScale(100))
-            .attr("x", width / 2)
-            .attr("text-anchor", "middle")
-            .attr("alignment-baseline", "text-after-edge")
-            .style("font-size", "12px")
-            .style("font-weight", 400)
-            .style("fill", "#333")
-            .style("stroke", "#f9f9f9")
-            .style("stroke-width", 3)
-            .style("paint-order", "stroke")
-            .text("Többség");
-
-        svgSelection
-            .append("line")
-            .attr("x1", 0)
-            .attr("x2", width)
-            .attr("y1", yScale(133))
-            .attr("y2", yScale(133))
-            .attr("stroke", "#aaa")
-            .attr("stroke-width", 1)
-            .attr("stroke-dasharray", "2,2")
-            .lower();
-
-        svgSelection
-            .append("text")
-            .attr("y", yScale(133))
-            .attr("x", width / 2)
-            .attr("text-anchor", "middle")
-            .attr("alignment-baseline", "text-after-edge")
-            .style("font-size", "12px")
-            .style("font-weight", 400)
-            .style("fill", "#333")
-            .style("stroke", "#f9f9f9")
-            .style("stroke-width", 3)
-            .style("paint-order", "stroke")
-            .text("Kétharmad");
-
-        // 12) Add min and max values
-
-        svgSelection
-            .append("text")
-            .attr("y", yScale(0))
-            .attr("x", xScaleFidesz(0) - 3)
-            .attr("text-anchor", "end")
-            .attr("alignment-baseline", " text-after-edge")
-            .style("font-size", "12px")
-            .style("font-weight", 400)
-            .style("fill", "#333")
-            .text("0");
-       
-        svgSelection
-            .append("text")
-            .attr("y", yScale(199))
-            .attr("x", xScaleFidesz(0) + 3)
-            .attr("text-anchor", "start")
-            .attr("alignment-baseline", " text-before-edge")
-            .style("font-size", "12px")
-            .style("font-weight", 400)
-            .style("fill", "#333")
-            .text("199");
-    }    
+        return 'Nincs többség';
+    }
 </script>
 
-<article id="mandate-visualization">
-    <svg bind:this={svg} viewBox={`0 0 ${width} ${height}`}></svg>
+<article id="mandate-visualization" bind:this={container}>
+    <svg bind:this={svg} viewBox="0 0 {width} {height}"></svg>
     <div class="chartInfos">
         <img src="/images/candidate/fidesz.png" alt="Fidesz" class="fidesz" />
         <div class="textContainer">
             <h2 id="leaderText">Prognózis:</h2>
             <div class="standing">
-                Tisza többség
+                {leaderText}
             </div>
         </div>
         <img src="/images/candidate/tisza.png" alt="Tisza" class="tisza" />
@@ -326,10 +171,20 @@
             }
         }
     }
-
 }
+
 svg {
     background-color: #f9f9f9;
     border: 2px solid #f5f5f5;
+    width: 100%;
+    padding-bottom: 30px;
+    height: auto;
+}
+
+@media (max-width: 600px) {
+    .chartInfos {
+        max-width: 330px;
+        margin-top: -36px;
+    }
 }
 </style>

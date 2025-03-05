@@ -287,7 +287,7 @@
         top: 10px;
         left: 50%;
         transform: translateX(-50%);
-        width: 300px;
+        width: min(300px, 80%);
         z-index: 2;
         pointer-events: none; /* so the legend doesn't block map interactions */
         background-color: #fff;
