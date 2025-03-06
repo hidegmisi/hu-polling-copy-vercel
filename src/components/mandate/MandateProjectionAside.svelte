@@ -1,6 +1,6 @@
 <script lang="ts">
-    import BottomMenu from "$components/ui/bottomMenu/BottomMenu.svelte";
-    import BottomMenuItem from "$components/ui/bottomMenu/BottomMenuItem.svelte";
+    import BottomMenu from "$components/ui/bottom-menu/BottomMenu.svelte";
+    import BottomMenuItem from "$components/ui/bottom-menu/BottomMenuItem.svelte";
     import type { Simulation } from "$lib/types";
     import { createEventDispatcher, onMount } from "svelte";
 

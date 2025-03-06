@@ -10,7 +10,7 @@ import type { PollData, Simulation } from "./types";
 }; */
 
 async function fetchPollData(): Promise<Record<string, PollData>> {
-    const basePath = 'data/';
+    const basePath = '/data/';
     let fetchedData: Record<string, PollData> = {};
     for (const tableName of ["sure_voters", "all_voters"]) {
         const response = await fetch(basePath + tableName + ".csv");
@@ -22,7 +22,7 @@ async function fetchPollData(): Promise<Record<string, PollData>> {
 
 
 async function fetchSimulationData(): Promise<Record<string, Simulation> | false> {
-    const response = await fetch("data/simulationData.json");
+    const response = await fetch("/data/simulationData.json");
     if (!response.ok) return false;
     return await response.json();
 }

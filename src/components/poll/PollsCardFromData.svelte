@@ -9,6 +9,7 @@
     };
     export let chart_id: string;
     export let showSource: boolean = false;
+    export let featured: boolean = false;
 
     const chartData = charts.hasOwnProperty(chart_id) ? charts[chart_id] : null;
 </script>
@@ -26,7 +27,7 @@
         renderOptions={chartData.renderOptions}
         voterType={chartData.voterType}
         pollsterGroup={chartData.pollsterGroup}
-        featured={chartData.featured}
+        featured={featured || chartData.featured}
         showSource={showSource}
     />
 {/if}

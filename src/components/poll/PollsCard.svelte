@@ -11,8 +11,8 @@
     import { onMount } from "svelte";
     import { pollsterGroups } from "$stores/dataStore";
     import PollsChart from "./PollsChart.svelte";
-    import BottomMenu from "$components/ui/bottomMenu/BottomMenu.svelte";
-    import BottomMenuItem from "$components/ui/bottomMenu/BottomMenuItem.svelte";
+    import BottomMenu from "$components/ui/bottom-menu/BottomMenu.svelte";
+    import BottomMenuItem from "$components/ui/bottom-menu/BottomMenuItem.svelte";
 
     export let data = {
         sure_voters: [] as PollData,
@@ -28,13 +28,15 @@
     export let renderOptions = {} as Record<string, any> | undefined;
     export let voterType = "sure_voters" as "sure_voters" | "all_voters";
     export let pollsterGroup = "összes" as PollsterGroup;
-    
+
     export let featured = false;
     export let showSource = false;
 
     let chartOptions = {
         data: [] as Poll[],
-        pollsterGroupIndex: (pollsterGroups.findIndex((group) => group === pollsterGroup) || 0) as 0 | 1 | 2,
+        pollsterGroupIndex: (pollsterGroups.findIndex(
+            (group) => group === pollsterGroup,
+        ) || 0) as 0 | 1 | 2,
         smoothing: "movingAverage" as "movingAverage" | "lowess",
     };
 
@@ -54,10 +56,10 @@
                 clearInterval(loadingInterval);
             }
         }, 10);
-    })
+    });
 </script>
 
-<article class="pollGraph" class:featured={featured}>
+<article class="pollGraph" class:featured>
     <h1>{title}</h1>
     <div class="description">
         <p>
@@ -80,7 +82,8 @@
                         <option value={i}>{group}</option>
                     {/each}
                 </select>
-                közvélemény-kutató{!chartOptions.pollsterGroupIndex ? '' : 'k'} adatai alapján.
+                közvélemény-kutató{!chartOptions.pollsterGroupIndex ? "" : "k"} adatai
+                alapján.
             {/if}
         </p>
         <p>
@@ -99,22 +102,22 @@
         selectedPollsterGroup={pollsterGroups[chartOptions.pollsterGroupIndex]}
         {dateRange}
         {annotations}
-        renderOptions={{...renderOptions, smoothing: chartOptions.smoothing}}
-
-        on:updateWindowDays={(e) => windowDays = e.detail}
+        renderOptions={{ ...renderOptions, smoothing: chartOptions.smoothing }}
+        on:updateWindowDays={(e) => (windowDays = e.detail)}
     />
-    <BottomMenu>
-        <BottomMenuItem>Módszertan</BottomMenuItem>
-        {#if chartId}
-        <BottomMenuItem>Megosztás</BottomMenuItem>
-        {/if}
-    </BottomMenu>
     {#if showSource}
-    <div class="source">
-        <p>
-            Választás 2026 – Vox Populi, https://valami.hu<br>
-        </p>
-    </div>
+        <div class="source">
+            <p>
+                Választás 2026 – Vox Populi, https://valasztas-2026.kozvelemeny.org
+            </p>
+        </div>
+    {:else}
+        <BottomMenu>
+            {#if chartId}
+                <BottomMenuItem link={`/abra/${chartId}`}>Módszertan</BottomMenuItem>
+                <BottomMenuItem link={`/abra/${chartId}`}>Megosztás</BottomMenuItem>
+            {/if}
+        </BottomMenu>
     {/if}
 </article>
 

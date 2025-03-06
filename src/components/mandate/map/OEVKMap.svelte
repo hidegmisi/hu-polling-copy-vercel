@@ -67,7 +67,7 @@
         }
     }
 
-    $: if (map && data) {
+    $: if (!mapLoaded && map && data) {
         const loadingInterval = setInterval(() => {
             if (mapLoaded) {
                 clearInterval(loadingInterval);

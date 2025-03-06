@@ -639,7 +639,7 @@ export class ChartRenderer {
         const clipRect = this.svg.select("#" + this.clipPathId + " rect");
         clipRect
             .attr("x", 0)
-            .attr("width", x(data.date))
+            .attr("width", Math.max(0, x(data.date)))
             .attr("height", height);
     }
 

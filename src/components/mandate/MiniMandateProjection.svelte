@@ -1,8 +1,8 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import type { Simulation } from "$lib/types";
-    import { MiniMandateChart } from "$lib/chart/MiniMandateChart";
-    import { DeviceType, getLayoutConfiguration } from "$lib/chart/MiniMandateChartTypes";
+    import { MiniMandateChart } from "$lib/mini-mandate-chart/MiniMandateChart";
+    import { DeviceType, getLayoutConfiguration } from "$lib/mini-mandate-chart/MiniMandateChartTypes";
 
     export let data: Record<string, Simulation> = {};
 

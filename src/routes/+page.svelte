@@ -18,8 +18,8 @@
     import GridSectionTitle from "$components/grid/GridSectionTitle.svelte";
     import SimulationNameSpan from "$components/mandate/SimulationNameSpan.svelte";
     import ExplainerCard from "$components/section/ExplainerCard.svelte";
-    import BottomMenu from "$components/ui/bottomMenu/BottomMenu.svelte";
-    import BottomMenuItem from "$components/ui/bottomMenu/BottomMenuItem.svelte";
+    import BottomMenu from "$components/ui/bottom-menu/BottomMenu.svelte";
+    import BottomMenuItem from "$components/ui/bottom-menu/BottomMenuItem.svelte";
 
     let data = {
         sure_voters: [] as PollData,

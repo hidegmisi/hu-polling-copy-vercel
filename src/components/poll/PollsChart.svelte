@@ -32,7 +32,7 @@
         dispatch("updateWindowDays", chart.windowDays);
     });
 
-    $: if (chart && pollData) {
+    $: if (chart && pollData.length > 0) {
         chart.setOptions({
             pollData,
             dateRange,

@@ -1,5 +1,5 @@
 <script lang="ts">
-    type Variant = "aside" | "rightaside" | "left-half" | "right-half" | "middle" | "main" | "full";
+    type Variant = "aside" | "right-aside" | "left-half" | "right-half" | "middle" | "main" | "left-main" | "full";
 
     export let variant: Variant = "main";
 </script>
@@ -16,7 +16,7 @@
     }
 
     @media (min-width: 600px) {
-        .grid-item.aside {
+        .grid-item.aside, .grid-item.right-aside {
             grid-column: 1 / 2;
         }
         .grid-item.left-half {
@@ -28,7 +28,7 @@
         .grid-item.middle {
             grid-column: 1 / -1;
         }
-        .grid-item.main {
+        .grid-item.main, .grid-item.left-main {
             grid-column: 2 / 3;
         }
     }
@@ -36,6 +36,9 @@
     @media (min-width: 800px) {
         .grid-item.aside {
             grid-column: 1 / 2;
+        }
+        .grid-item.right-aside {
+            grid-column: 4 / 5;
         }
         .grid-item.left-half {
             grid-column: 1 / 3;
@@ -45,6 +48,9 @@
         }
         .grid-item.main {
             grid-column: 2 / 5;
+        }
+        .grid-item.left-main {
+            grid-column: 1 / 4;
         }
         .grid-item.full {
             grid-column: 1 / -1;
